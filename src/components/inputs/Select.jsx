@@ -2,7 +2,7 @@ import { InputLabel } from "./InputLabel"
 import { SelectOptions } from "./SelectOptions"
 
 
-export function Select({ inputClass = 'mb-3 space-y-2 w-full text-xs', name, labelName, options }) {
+export function Select({ inputClass = 'mb-3 space-y-2 w-full text-xs', name, labelName, options, defaultVal }) {
     return (
         <div className={inputClass}>
             <InputLabel labelName={labelName} />
@@ -11,6 +11,7 @@ export function Select({ inputClass = 'mb-3 space-y-2 w-full text-xs', name, lab
                 required="required"
                 name={`select-${name}`}
                 id={`select-${name}`}
+                defaultValue={defaultVal}
             >
                 <option value="">Select an option</option>
                 <SelectOptions options={options} />

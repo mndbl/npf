@@ -1,4 +1,4 @@
-export function Inputs({ type, placeholder, name, requiredInput =true}) {
+export function Inputs({ type, placeholder, name, requiredInput = true, defaultVal }) {
     if (requiredInput === true) {
         return (
             <input
@@ -7,7 +7,9 @@ export function Inputs({ type, placeholder, name, requiredInput =true}) {
                 type={type}
                 placeholder={placeholder}
                 name={name}
-                id={`required-input-${name}`} />
+                id={`required-input-${name}`}
+                defaultValue={defaultVal}
+            />
         )
     }
 
@@ -17,6 +19,8 @@ export function Inputs({ type, placeholder, name, requiredInput =true}) {
             type={type}
             placeholder={placeholder}
             name={`optional-input-${name}`}
-            id={`optional-input-${name}`} />
+            id={`optional-input-${name}`}
+            defaultValue={defaultVal}
+        />
     )
 }

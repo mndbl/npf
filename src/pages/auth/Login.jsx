@@ -3,6 +3,12 @@ import { GroupButton } from "../../components/buttons/GroupButton";
 import { InputGroup } from "../../components/inputs/InputGroup";
 import { AuthFormsWrap } from "../../components/wraps/AuthFormsWrap";
 import { authService } from "../../services/auth-services";
+import localforage from "localforage";
+
+export async function loader() {
+    localforage.removeItem('userAuth')
+    return null
+}
 
 export async function action({ request }) {
     const formData = await request.formData()
@@ -14,7 +20,7 @@ export async function action({ request }) {
         return redirect('/login')
     }
 
-    return redirect('/dashboard')
+    return redirect('/admin/dashboard')
 }
 
 export function Login() {
