@@ -1,7 +1,12 @@
 import { DOTS, usePagination } from "../../custom-hooks/usePagination";
+import { InputLabel } from "../inputs/InputLabel";
 import { PaginationWrap } from "../wraps/PaginationWrap";
 
-export function Pagination({ currentPage, totalCount, pageSize, onPageChange, siblingCount = 1 }) {
+const pageSizeOptions = [
+    10, 20, 50, 100
+]
+
+export function Pagination({ currentPage, totalCount, pageSize, onPageChange, siblingCount = 1, setPageSize }) {
     const paginationRange = usePagination({
         currentPage,
         totalCount,
@@ -26,8 +31,28 @@ export function Pagination({ currentPage, totalCount, pageSize, onPageChange, si
     const activePaginationPage = "px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
     return (
         <PaginationWrap>
-            <span className="w-full flex items-center col-span-3"> Showing {totalCount ? 1 + (currentPage * pageSize) - pageSize : 0}-{currentPage + 1 * pageSize > totalCount ? totalCount : ((currentPage + 1) * pageSize) - pageSize} of {totalCount} </span>
+            <span className="w-full flex items-center col-span-3">Showing {totalCount ? 1 + (currentPage * pageSize) - pageSize : 0}-{(currentPage + 1) * pageSize > totalCount ? totalCount : ((currentPage + 1) * pageSize) - pageSize} of {totalCount} </span>
             <span className="col-span-2"></span>
+            {/* select pahge size */}
+            <div className={'w-full gap-2 text-xs flex'}>
+                <InputLabel labelName={`Ver: `} requiredInput={false} />
+                <select
+                    className="w-1/2 px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                    required="required"
+                    name={`select-page-size`}
+                    id={`select-page-size`}
+                    defaultValue={pageSize}
+                    onChange={(e) => { setPageSize(Number(e.target.value)) }}
+                >
+                    <option value="">Select an option</option>
+                    {
+                        pageSizeOptions.map((opt) => <option key={`select-option-${opt}`}
+                            className='text-gray-100 dark:text-gray-800' value={opt}>
+                            {opt}
+                        </option>)
+                    }
+                </select>
+            </div>
             {/* <!-- Pagination --> */}
             <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                 <nav aria-label="Table navigation">
@@ -61,7 +86,7 @@ export function Pagination({ currentPage, totalCount, pageSize, onPageChange, si
 
                                 return (
                                     <li key={`pg-${pageNumber}`}
-                                        className={`${currentPage === pageNumber ? activePaginationPage : paginationPage} `}
+                                        className={`${currentPage === pageNumber ? activePaginationPage : paginationPage} cursor-pointer`}
                                         onClick={() => { onPageChange(pageNumber) }}>
                                         {pageNumber}
                                     </li>

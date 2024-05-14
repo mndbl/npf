@@ -1,4 +1,4 @@
-export function Inputs({ type, placeholder, name, requiredInput = true, defaultVal }) {
+export function Inputs({ type='text', placeholder, name, requiredInput = true, defaultVal }) {
     if (requiredInput === true) {
         return (
             <input
@@ -9,6 +9,8 @@ export function Inputs({ type, placeholder, name, requiredInput = true, defaultV
                 name={name}
                 id={`required-input-${name}`}
                 defaultValue={defaultVal}
+                step={0.01}
+                min={0}
             />
         )
     }
@@ -21,6 +23,8 @@ export function Inputs({ type, placeholder, name, requiredInput = true, defaultV
             name={`optional-input-${name}`}
             id={`optional-input-${name}`}
             defaultValue={defaultVal}
+            step={0.01}
+            min={0}
         />
     )
 }

@@ -12,9 +12,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortBy, setSortBy] = useState('')  // column name to sort
     const [isAscending, setIsAscending] = useState(true)
-    const handleSortingOrder = () => {
-        setIsAscending(!isAscending)
-    }
+
     const handleSortBy = (accessor) => {
         if (sortBy === accessor) {
             return setSortBy(prevValue => prevValue === accessor ? '' : accessor)
@@ -34,7 +32,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
             }
         }
         return data.slice(firstPageIndex, lastPageIndex)
-    }, [currentPage, sortBy, isAscending])
+    }, [currentPage, sortBy, isAscending, pageSize])
 
     return (
         <TableWrap>
@@ -46,7 +44,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
                         <AddButton />
                     </div>
                 </caption>
-                <thead>
+                <thead className="">
                     <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         {tableHeads.map((hd) =>
                             <th className="px-4 py-3" key={`th-table-${hd.header}`}>
@@ -58,12 +56,12 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
                                 }
                                 {
                                     sortBy && sortBy === hd.accessor ?
-                                        <button onClick={()=>setIsAscending(!isAscending)}>
+                                        <button onClick={() => setIsAscending(!isAscending)}>
                                             {
-                                            isAscending ? 
-                                            <ArrowDownIcon className="h-4 w-4 pt-2" aria-hidden="true" /> 
-                                            :
-                                            <ArrowUpIcon className="h-4 w-4 pt-2" aria-hidden="true" />
+                                                isAscending ?
+                                                    <ArrowDownIcon className="h-4 w-4 pt-2" aria-hidden="true" />
+                                                    :
+                                                    <ArrowUpIcon className="h-4 w-4 pt-2" aria-hidden="true" />
                                             }
                                         </button>
                                         :
@@ -87,6 +85,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
                 totalCount={data.length}
                 pageSize={pageSize}
                 onPageChange={page => setCurrentPage(page)}
+                setPageSize={setPageSize}
             />
         </TableWrap>
     )

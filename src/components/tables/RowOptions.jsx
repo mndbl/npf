@@ -1,7 +1,7 @@
 import { MagnifyingGlassCircleIcon, DocumentIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { Form, Link } from "react-router-dom"
 export function RowOptions({ id }) {
-    const iconClass = "h-5 w-5 py-3 text-sm"
+    const iconClass = "h-5 w-5 text-sm"
     return (
         <>
             <td className={`${iconClass} text-green-700`}>

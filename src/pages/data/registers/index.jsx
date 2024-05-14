@@ -10,7 +10,6 @@ export async function loader() {
     if (!userAuth) return null;
     const { accessToken } = userAuth.data
     const registers = await dataService.getData(`${registers_URL}/index`, '', {}, accessToken)
-    const registerDetails = registers.map(reg => reg.register_details)
     return { registers }
 }
 
@@ -28,6 +27,7 @@ const tableHeads = [
         header: 'description',
         accessor: 'description',
     },
+
     {
         header: 'amount',
         accessor: 'amount',

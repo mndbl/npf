@@ -14,7 +14,10 @@ import { CategoryAccount, loader as loaderCategorieId } from "./pages/data/categ
 import { action as destroyCategoryAction } from "./pages/data/categorie-accounts/destroy";
 import { FormAccount, action as formAccountAction } from "./pages/data/accounts/form";
 import { Account, loader as loaderAccountId } from "./pages/data/accounts/show";
-
+import {action as destroyAccountAction} from './pages/data/accounts/destroy'
+import { RegisterShow, loader as registerDataLoader } from "./pages/data/registers/show";
+import { RegisterForm, action as registerDataAction } from "./pages/data/registers/form";
+import {action as destroyRegisterAction} from './pages/data/registers/destroy'
 
 const pathCategories = '/admin/categories-accounts'
 const pathAccounts = '/admin/accounts'
@@ -95,15 +98,47 @@ export const router = createBrowserRouter([
                 loader: loaderAccountId
             },
             {
-                path: `${pathAccounts}/add`,
+                path: `${pathAccounts}/:id/edit`,
                 element: <FormAccount />,
+                loader:loaderAccountId,
                 action: formAccountAction
             },
             {
-                path: '/admin/registers',
+                path: `${pathAccounts}/add`,
+                element: <FormAccount />,
+                loader:loaderAccountId,
+                action: formAccountAction
+            },
+            {
+                path: `${pathAccounts}/:id/destroy`,
+                action: destroyAccountAction
+            },
+            {
+                path: `${pathRegisters}`,
                 element: <RegistersIndex />,
                 loader: registersLoader
             },
+            {
+                path: `${pathRegisters}/:id`,
+                element: <RegisterShow />,
+                loader: registerDataLoader
+            },
+            {
+                path: `${pathRegisters}/:id/edit`,
+                element: <RegisterForm />,
+                loader: registerDataLoader,
+                action: registerDataAction
+            },
+            {
+                path: `${pathRegisters}/add`,
+                element: <RegisterForm />,
+                loader: registerDataLoader,
+                action: registerDataAction
+            },
+            {
+                path:`${pathRegisters}/:id/destroy`,
+                action: destroyRegisterAction
+            }
         ]
     },
 ])

@@ -26,7 +26,7 @@ const tableHeads = [
 
 export function CategoriesAccountsIndex() {
     const { categories } = useLoaderData()
-    const data = useMemo(() => categories)
+    const data = useMemo(() => categories,[categories])
     return (
         <Table captionTable={'Categories Accounts '} index tableHeads={tableHeads} data={data} />
     )

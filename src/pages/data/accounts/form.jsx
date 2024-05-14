@@ -1,8 +1,12 @@
 import localforage from "localforage";
 import { AuthFormsWrap } from "../../../components/wraps/AuthFormsWrap";
-import { redirect } from "react-router-dom";
+import { Form, redirect, useLoaderData } from "react-router-dom";
 import { dataService } from "../../../services/data-services";
 import { accounts_URL } from "../../../config/main.config";
+import { Select } from "../../../components/inputs/Select";
+import { InputGroup } from "../../../components/inputs/InputGroup";
+import { GroupButton } from "../../../components/buttons/GroupButton";
+import { useEffect, useState } from "react";
 
 export async function action({ params, request }) {
     const userAuth = await localforage.getItem('userAuth')
@@ -10,24 +14,89 @@ export async function action({ params, request }) {
     if (!accessToken) return redirect('/login')
     const id = params.id
     const formData = await request.formData()
-    const name = formData.get('category-account-name')
-    const type = formData.get('select-type-of-category')
+    const name = formData.get('account-name')
+    const account_category_id = formData.get('select-account-category')
+    const estimated_budget_amount = formData.get('estimated-budget')
+    const init_deb_balance = formData.get('initial-debit')
+    const init_cre_balance = formData.get('initial-credit')
+    const cut_off_date = formData.get('cut-off-date')
+
     const data = {
-        type, name
+        name,
+        account_category_id,
+        estimated_budget_amount,
+        init_deb_balance,
+        init_cre_balance,
+        cut_off_date,
     }
+    console.log(data);
     if (id) {
-        await dataService.updateData(`${accounts_URL}/update/${id}`,data, accessToken)
+        await dataService.updateData(`${accounts_URL}/update/${id}`, data, accessToken)
     } else {
-        await dataService.addData(`${accounts_URL}/create`,data, accessToken)
+        await dataService.addData(`${accounts_URL}/create`, data, accessToken)
     }
-    return redirect('/admin/categories-accounts')
+    return redirect("/admin/accounts")
 
 }
 
 export function FormAccount() {
+    const { account, accountCategories } = useLoaderData()
+    const [method, setMethod] = useState('post')
+    useEffect(() => {
+        if (account?.id) {
+            setMethod('put')
+        }
+    }, [])
+
     return (
         <AuthFormsWrap captionForm="Accounts">
+            <Form method={method}>
+                <div className="grid grid-cols-2 gap-2">
+                    <InputGroup
+                        labelName={'name'}
+                        placeholder={'add name'}
+                        name={'account-name'}
+                        defaultVal={account?.id ? account.name : ''}
+                    />
+                    <Select
+                        name={'account-category'}
+                        labelName={'account categories'}
+                        options={accountCategories}
+                        defaultVal={account?.id ? account.account_category : ''}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
 
+                    <InputGroup
+                        labelName={'estimated budget'}
+                        type='number'
+                        name={'estimated-budget'}
+                        defaultVal={account?.id ? account.estimated_budget_amount : 0}
+
+                    />
+                    <InputGroup
+                        labelName={'cut off date'}
+                        type={"date"}
+                        name={'cut-off-date'}
+                        defaultVal={account?.id && account.cut_off_date}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <InputGroup
+                        labelName={'initial debit'}
+                        type={'number'}
+                        name={'initial-debit'}
+                        defaultVal={account?.id ? account.init_deb_balance : 0}
+                    />
+                    <InputGroup
+                        labelName={'initial credit'}
+                        type={'number'}
+                        name={'initial-credit'}
+                        defaultVal={account?.id ? account.init_cre_balance : 0}
+                    />
+                </div>
+                <GroupButton />
+            </Form>
         </AuthFormsWrap>
     )
 }

@@ -32,6 +32,7 @@ export function FormCategorieAccount() {
     const [method, setMethod] = useState('post')
     const { categoryAccount } = useLoaderData()
     const { id, name, type } = categoryAccount
+    
 
     useEffect(() => {
         if (id) {
@@ -40,7 +41,14 @@ export function FormCategorieAccount() {
     }, [])
 
     const typeOfAccounts = [
-        'balance sheet', 'statement of incomes'
+        {
+            id: 1,
+            name: 'balance sheet'
+        },
+        {
+            id: 2, 
+            name: 'income statement'
+        }
     ]
     return (
         <AuthFormsWrap captionForm="Categorie Account">

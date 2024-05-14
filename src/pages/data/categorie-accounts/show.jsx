@@ -2,8 +2,6 @@ import localforage from "localforage"
 import { redirect, useLoaderData } from "react-router-dom"
 import { dataService } from "../../../services/data-services"
 import { accounts_categories_URL } from "../../../config/main.config"
-import { useState } from "react"
-import { BackButton } from "../../../components/buttons/BackButton"
 import { SectionShowDetailsWrap } from "../../../components/wraps/SectionShowDetailsWrap"
 
 export async function loader({ params }) {
@@ -11,21 +9,15 @@ export async function loader({ params }) {
     const { accessToken } = userAuth.data
     if (!accessToken) return redirect('/login')
     const id = params.id
-    let categoryAccount
-    if (id) {
-        categoryAccount = await dataService.getDataId(`${accounts_categories_URL}/show/${id}`, accessToken)
-    } else {
-        categoryAccount = {}
-    }
+    const categoryAccount = id ? await dataService.getDataId(`${accounts_categories_URL}/show/${id}`, accessToken) : {}
     return { categoryAccount }
 }
 
 export function CategoryAccount() {
     const { categoryAccount } = useLoaderData()
-    const [showAccounts, setShowAccounts] = useState(false)
     return (
         <SectionShowDetailsWrap
-            description={'Category Name'}
+            description={'Category Name: '}
             label={categoryAccount.name}
             textButton={'see accounts'}
         >

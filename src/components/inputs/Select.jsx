@@ -11,7 +11,7 @@ export function Select({ inputClass = 'mb-3 space-y-2 w-full text-xs', name, lab
                 required="required"
                 name={`select-${name}`}
                 id={`select-${name}`}
-                defaultValue={defaultVal}
+                defaultValue={defaultVal.id}
             >
                 <option value="">Select an option</option>
                 <SelectOptions options={options} />

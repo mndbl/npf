@@ -4,12 +4,12 @@ import { BackButton } from "../buttons/BackButton"
 export function SectionShowDetailsWrap({ children, description, label, textButton }) {
     const [showDetails, setShowDetails] = useState(false)
     return (
-        <section className="w-3/5 m-auto pt-8">
+        <section className="w-3/5 m-auto pt-8 capitalize">
             <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div className="rounded-t mb-0 px-0 border-0">
                     <div className="flex flex-wrap items-center px-4 py-2">
                         <div className="relative w-full max-w-full flex-grow flex-1">
-                            <h3 className="font-semibold text-base text-gray-900 dark:text-gray-50">{description}: <span className="uppercase font-bold">{label}</span></h3>
+                            <h3 className="font-semibold text-base text-gray-900 dark:text-gray-50">{description} <span className="uppercase font-bold">{label}</span></h3>
                         </div>
                         <div className="relative w-full max-w-full flex-grow flex-1 text-right">
                             <button

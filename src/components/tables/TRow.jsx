@@ -5,7 +5,7 @@ export const TRow = ({ tRow, tableHeads }) => {
 
         {
             tableHeads.map(( hd, index) => {
-                return (<td key={`${index}-${hd.accessor}-${tRow.id}`} className="px-4 py-3 text-sm">{tRow[hd.accessor]}</td>)
+                return (<td key={`${index}-${hd.accessor}-${tRow.id}`} className="px-2 text-sm">{tRow[hd.accessor]}</td>)
             })
         }
         <RowOptions id={tRow.id} />
