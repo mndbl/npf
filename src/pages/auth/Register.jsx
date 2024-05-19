@@ -18,7 +18,6 @@ export async function action({ request }) {
     const password_confirmation = formData.get('user-password-confirm')
     const data = { name, email, password, password_confirmation }
     const newUser = await authService.register(data)
-    console.log(data);
     if (newUser.success === false) {
         localforage.setItem('errorMessage', newUser.message)
         return redirect('/register')

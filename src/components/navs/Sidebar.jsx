@@ -1,11 +1,16 @@
 import { SidebarItems } from "./SidebarItems"
-import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon, HomeIcon } from "@heroicons/react/24/solid";
 
 const itemsSidebar = [
     {
         title: 'main',
         icon: false,
         subItems: [
+            {
+                title: "home",
+                path: "/",
+                icon: <HomeIcon className='w-5 h-5' />
+            },
             {
                 title: "dashboard",
                 path: "/admin/dashboard",
@@ -43,16 +48,16 @@ const itemsSidebar = [
         title: 'consults',
         icon: false,
         subItems: [
-            {
-                title: 'by accounts',
-                path: 'admin/consults/by-accounts',
-                icon: <WalletIcon className="w-5 h-5" />
-            },
-            {
-                title: 'by categorie accounts',
-                path: '/admin/consults/by-categories-accounts',
-                icon: <ViewColumnsIcon className="w-5 h-5" />
-            },
+            // {
+            //     title: 'by accounts',
+            //     path: 'admin/consults/by-accounts',
+            //     icon: <WalletIcon className="w-5 h-5" />
+            // },
+            // {
+            //     title: 'by categorie accounts',
+            //     path: '/admin/consults/by-categories-accounts',
+            //     icon: <ViewColumnsIcon className="w-5 h-5" />
+            // },
             {
                 title: 'by period',
                 path: '/admin/consults/by-periods',

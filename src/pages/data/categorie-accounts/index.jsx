@@ -5,15 +5,17 @@ import { dataService } from "../../../services/data-services";
 import { accounts_categories_URL } from "../../../config/main.config";
 import { useMemo } from "react";
 
-export async function loader() {
+export async function loader({ request }) {
     const userAuth = await localforage.getItem('userAuth')
     if (!userAuth) return redirect('/login');
     const { accessToken } = userAuth.data
-    const categories = await dataService.getData(`${accounts_categories_URL}/index`, '', {}, accessToken);
-    return { categories }
+    const url = new URL(request.url)
+    const q = url.searchParams.get('q')
+    const categories = await dataService.getData(`${accounts_categories_URL}/index`, q, { keys: ['name'] }, accessToken);
+    return { categories,q }
 }
 const tableHeads = [
- 
+
     {
         header: 'account name',
         accessor: 'name',
@@ -26,7 +28,7 @@ const tableHeads = [
 
 export function CategoriesAccountsIndex() {
     const { categories } = useLoaderData()
-    const data = useMemo(() => categories,[categories])
+    const data = useMemo(() => categories, [categories])
     return (
         <Table captionTable={'Categories Accounts '} index tableHeads={tableHeads} data={data} />
     )

@@ -1,8 +1,8 @@
 export function AuthFormsWrap({ children, captionForm = 'Shop Info' }) {
     return (
-        <div className="relative flex w-full items-center z-0 justify-center bg-center  py-4 px-4 sm:px-6 lg:px-8 bg-blue-900 opacity-60 bg-no-repeat bg-cover"
+        <div className="relative flex w-full items-center z-0 justify-center bg-center  py-4 px-4 sm:px-6 lg:px-8"
         >
-            <div className="absolute bg-black opacity-60 inset-0 z-0"></div>
+            <div className=""></div>
             <div className="max-w-lg w-full space-y-4 px-10 py-4 bg-white rounded-xl shadow-lg z-10">
                 <div className="grid  gap-8 grid-cols-1">
                     <div className="flex flex-col ">

@@ -9,8 +9,10 @@ export async function action() {
     await authService.logout(accessToken)
     localforage.setItem('userAuth',
         {
-            username: '',
-            accessToken: ''
+            username: null,
+            accessToken: null,
+            message: 'user logout',
+            success: false
         })
     return { userAuth }, redirect('/')
 }

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { Dashboard } from "./pages/Dashboard";
-import { LandingWrap } from "./components/wraps/LandingWrap";
+import { LandingWrap, loader as landingLoader } from "./components/wraps/LandingWrap";
 import { Login, action as loginAction, loader as loginLoader } from "./pages/auth/Login";
 import { Register, action as registerAction, loader as registerLoader } from "./pages/auth/Register";
 import { Logout, action as logoutAction } from "./pages/auth/Logout";
@@ -14,23 +14,26 @@ import { CategoryAccount, loader as loaderCategorieId } from "./pages/data/categ
 import { action as destroyCategoryAction } from "./pages/data/categorie-accounts/destroy";
 import { FormAccount, action as formAccountAction } from "./pages/data/accounts/form";
 import { Account, loader as loaderAccountId } from "./pages/data/accounts/show";
-import {action as destroyAccountAction} from './pages/data/accounts/destroy'
+import { action as destroyAccountAction } from './pages/data/accounts/destroy'
 import { RegisterShow, loader as registerDataLoader } from "./pages/data/registers/show";
 import { RegisterForm, action as registerDataAction } from "./pages/data/registers/form";
-import {action as destroyRegisterAction} from './pages/data/registers/destroy'
+import { action as destroyRegisterAction } from './pages/data/registers/destroy'
+import { ByPeriodsConsults } from "./pages/data/consults/ByPeriodsConsults";
 
 const pathCategories = '/admin/categories-accounts'
 const pathAccounts = '/admin/accounts'
 const pathRegisters = '/admin/registers'
+const pathConsults = '/admin/consults'
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <LandingWrap />,
+        loader: landingLoader,
         children: [
             {
                 index: true,
-                element: <LandingPage />
+                element: <LandingPage />,
             },
             {
                 path: 'login',
@@ -100,13 +103,13 @@ export const router = createBrowserRouter([
             {
                 path: `${pathAccounts}/:id/edit`,
                 element: <FormAccount />,
-                loader:loaderAccountId,
+                loader: loaderAccountId,
                 action: formAccountAction
             },
             {
                 path: `${pathAccounts}/add`,
                 element: <FormAccount />,
-                loader:loaderAccountId,
+                loader: loaderAccountId,
                 action: formAccountAction
             },
             {
@@ -136,8 +139,12 @@ export const router = createBrowserRouter([
                 action: registerDataAction
             },
             {
-                path:`${pathRegisters}/:id/destroy`,
+                path: `${pathRegisters}/:id/destroy`,
                 action: destroyRegisterAction
+            },
+            {
+                path: `${pathConsults}/by-periods`,
+                element: <ByPeriodsConsults />
             }
         ]
     },

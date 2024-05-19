@@ -1,11 +1,12 @@
+import { nf } from "../../config/main.config"
 import { RowOptions } from "./RowOptions"
 
 export const TRow = ({ tRow, tableHeads }) => {
     const dataCells = <tr className="capitalize bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400">
-
         {
-            tableHeads.map(( hd, index) => {
-                return (<td key={`${index}-${hd.accessor}-${tRow.id}`} className="px-2 text-sm">{tRow[hd.accessor]}</td>)
+            tableHeads.map((hd, index) => {
+                return (<td key={`${index}-${hd.accessor}-${tRow.id}`}
+                    className={`px-2 text-sm  ${hd.type === 'amount' && 'text-right'}`}>{hd.type === 'amount' ? nf.format(tRow[hd.accessor]) : tRow[hd.accessor]}</td>)
             })
         }
         <RowOptions id={tRow.id} />

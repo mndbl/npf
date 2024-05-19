@@ -8,7 +8,7 @@ export function DashboardHeader({ theme, toggleTheme, userAuth }) {
         <section id="dashboard-header" className="fixed w-full flex items-center justify-between h-14 text-white z-10">
             <UserAuthAvatar userAuth={userAuth}/>
             <div className="flex flex-1 justify-between items-center h-14 bg-blue-800 dark:bg-gray-800 header-right">
-                <SearchBar />
+                <div className="flex flex-grow"></div>
                 <ul className="flex items-center">
                     <li>
                         <ToggleThemeButton theme={theme} toggleTheme={toggleTheme} />

@@ -4,6 +4,7 @@ import { TableWrap } from "../wraps/TableWrap";
 import { Pagination } from "./Pagination.jsx"
 import { TRow } from "./TRow.jsx";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/solid";
+import { SearchBar } from "../inputs/SearchBar.jsx";
 
 
 
@@ -38,14 +39,15 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
         <TableWrap>
             <table className="w-full">
                 <caption
-                    className="text-lg px-4 py-3 text-center font-bold tracking-wide text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                    className="text-lg px-4 py-3 text-center font-bold tracking-wide text-gray-500 dark:text-gray-100 uppercase border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <SearchBar />
                     {captionTable}
                     <div className="float-right">
                         <AddButton />
                     </div>
                 </caption>
                 <thead className="">
-                    <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                    <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-100 dark:bg-gray-800">
                         {tableHeads.map((hd) =>
                             <th className="px-4 py-3" key={`th-table-${hd.header}`}>
                                 {

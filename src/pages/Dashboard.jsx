@@ -1,7 +1,6 @@
 import { StaticCard } from "../components/cards/StaticCard"
 import { SocialAndRecent } from "../components/sections/SocialTrafficAndRecentActivities"
 import { TaskSummaries } from "../components/sections/TaskSummaries"
-import { Table } from "../components/tables/Table"
 
 
 
@@ -54,7 +53,7 @@ export function Dashboard() {
             {/* <!-- ./Task Summaries --> */}
 
             {/* <!-- Client Table --> */}
-            <Table />
+           {/* <Table />*/} 
             {/* <!-- ./Client Table --> */}
 
             {/* <!-- Contact Form --> */}

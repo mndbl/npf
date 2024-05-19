@@ -31,30 +31,35 @@ export function Pagination({ currentPage, totalCount, pageSize, onPageChange, si
     const activePaginationPage = "px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
     return (
         <PaginationWrap>
-            <span className="w-full flex items-center col-span-3">Showing {totalCount ? 1 + (currentPage * pageSize) - pageSize : 0}-{(currentPage + 1) * pageSize > totalCount ? totalCount : ((currentPage + 1) * pageSize) - pageSize} of {totalCount} </span>
-            <span className="col-span-2"></span>
+            <div className="flex-grow items-center mt-2">
+                <span className="w-full flex items-center col-span-3">Showing {totalCount ? 1 + (currentPage * pageSize) - pageSize : 0}-{(currentPage + 1) * pageSize > totalCount ? totalCount : ((currentPage + 1) * pageSize) - pageSize} of {totalCount} </span>
+                <span className="col-span-2"></span>
+            </div>
             {/* select pahge size */}
-            <div className={'w-full gap-2 text-xs flex'}>
-                <InputLabel labelName={`Ver: `} requiredInput={false} />
-                <select
-                    className="w-1/2 px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                    required="required"
-                    name={`select-page-size`}
-                    id={`select-page-size`}
-                    defaultValue={pageSize}
-                    onChange={(e) => { setPageSize(Number(e.target.value)) }}
-                >
-                    <option value="">Select an option</option>
-                    {
-                        pageSizeOptions.map((opt) => <option key={`select-option-${opt}`}
-                            className='text-gray-100 dark:text-gray-800' value={opt}>
-                            {opt}
-                        </option>)
-                    }
-                </select>
+            <div className="flex-grow">
+
+                <div className={'w-full gap-2 text-xs flex '}>
+                    <InputLabel labelName={`Show: `} requiredInput={false} />
+                    <select
+                        className="w-12 px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                        required="required"
+                        name={`select-page-size`}
+                        id={`select-page-size`}
+                        defaultValue={pageSize}
+                        onChange={(e) => { setPageSize(Number(e.target.value)) }}
+                    >
+                        <option value="">Select an option</option>
+                        {
+                            pageSizeOptions.map((opt) => <option key={`select-option-${opt}`}
+                                className='text-gray-100 dark:text-gray-800' value={opt}>
+                                {opt}
+                            </option>)
+                        }
+                    </select>
+                </div>
             </div>
             {/* <!-- Pagination --> */}
-            <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+            <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end flex-grow">
                 <nav aria-label="Table navigation">
                     <ul className="inline-flex items-center">
                         {
@@ -79,13 +84,13 @@ export function Pagination({ currentPage, totalCount, pageSize, onPageChange, si
                                 </li>
                         }
                         {
-                            paginationRange.map(pageNumber => {
+                            paginationRange.map((pageNumber, index) => {
                                 if (pageNumber === DOTS) {
-                                    return <li key={`pg-${pageNumber}`}>&#8230;</li>
+                                    return <li key={`pg-${index}`}>&#8230;</li>
                                 }
 
                                 return (
-                                    <li key={`pg-${pageNumber}`}
+                                    <li key={`pg-${index}`}
                                         className={`${currentPage === pageNumber ? activePaginationPage : paginationPage} cursor-pointer`}
                                         onClick={() => { onPageChange(pageNumber) }}>
                                         {pageNumber}

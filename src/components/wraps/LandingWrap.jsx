@@ -1,11 +1,16 @@
-import { useState } from "react"
 import { Footer } from "../navs/Footer"
 import { LandingHeader } from "../headers/LandingHeader"
-import { Hero } from "../sections/Hero"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLoaderData } from "react-router-dom"
+import localforage from "localforage"
 
-export function LandingWrap(params) {
-    const [userAuth, setUserAuth] = useState(null)
+export async function loader() {
+    const userAuth = await localforage.getItem('userAuth')
+    console.log(userAuth);
+    return { userAuth }
+}
+
+export function LandingWrap() {
+    const { userAuth } = useLoaderData()
     return (
 
         <>

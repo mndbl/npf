@@ -46,6 +46,7 @@ const logout = async (currAccToken) => {
     const userLogout = await axios.post(API_URL + '/logout',
         [], authHeader(currAccToken))
         .then((res) => {
+            localforage.setItem('userAuth',null)
             return res.data.data;
         })
         .catch((err) => {
