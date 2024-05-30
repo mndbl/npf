@@ -1,4 +1,4 @@
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import { GroupButton } from "../../components/buttons/GroupButton";
 import { InputGroup } from "../../components/inputs/InputGroup";
 import { AuthFormsWrap } from "../../components/wraps/AuthFormsWrap";
@@ -6,7 +6,13 @@ import { authService } from "../../services/auth-services";
 import localforage from "localforage";
 
 export async function loader() {
-    localforage.removeItem('userAuth')
+    localforage.setItem('userAuth',
+        {
+            username: null,
+            accessToken: null,
+            message: 'user logout',
+            success: false
+        })
     return null
 }
 
@@ -22,7 +28,7 @@ export async function action({ request }) {
         localforage.setItem('errorMessage', newUser.message)
         return redirect('/register')
     }
-    return redirect('/admin/dashboard')
+    return redirect('/admin')
 }
 
 

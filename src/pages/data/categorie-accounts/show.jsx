@@ -1,8 +1,9 @@
 import localforage from "localforage"
-import { redirect, useLoaderData } from "react-router-dom"
+import { redirect, useLoaderData, useNavigation } from "react-router-dom"
 import { dataService } from "../../../services/data-services"
 import { accounts_categories_URL } from "../../../config/main.config"
 import { SectionShowDetailsWrap } from "../../../components/wraps/SectionShowDetailsWrap"
+import { Loader } from "../../../components/loaders/loader"
 
 export async function loader({ params }) {
     const userAuth = await localforage.getItem('userAuth')
@@ -14,7 +15,10 @@ export async function loader({ params }) {
 }
 
 export function CategoryAccount() {
+    const navigation = useNavigation()
     const { categoryAccount } = useLoaderData()
+    if (navigation.state === 'loading') return <Loader />
+
     return (
         <SectionShowDetailsWrap
             description={'Category Name: '}

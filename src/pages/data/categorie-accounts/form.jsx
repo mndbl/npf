@@ -3,10 +3,11 @@ import { Select } from "../../../components/inputs/Select";
 import { AuthFormsWrap } from "../../../components/wraps/AuthFormsWrap";
 import { InputGroup } from "../../../components/inputs/InputGroup";
 import { GroupButton } from "../../../components/buttons/GroupButton";
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import { dataService } from "../../../services/data-services";
 import { accounts_categories_URL } from "../../../config/main.config";
 import { useEffect, useState } from "react";
+import { Loader } from "../../../components/loaders/loader";
 
 export async function action({ params, request }) {
     const userAuth = await localforage.getItem('userAuth')
@@ -20,9 +21,9 @@ export async function action({ params, request }) {
         type, name
     }
     if (id) {
-        await dataService.updateData(`${accounts_categories_URL}/update/${id}`,data, accessToken)
+        await dataService.updateData(`${accounts_categories_URL}/update/${id}`, data, accessToken)
     } else {
-        await dataService.addData(`${accounts_categories_URL}/create`,data, accessToken)
+        await dataService.addData(`${accounts_categories_URL}/create`, data, accessToken)
     }
     return redirect('/admin/categories-accounts')
 
@@ -32,13 +33,13 @@ export function FormCategorieAccount() {
     const [method, setMethod] = useState('post')
     const { categoryAccount } = useLoaderData()
     const { id, name, type } = categoryAccount
-    
+
 
     useEffect(() => {
         if (id) {
             setMethod('put')
         }
-    }, [])
+    }, [id])
 
     const typeOfAccounts = [
         {
@@ -46,10 +47,14 @@ export function FormCategorieAccount() {
             name: 'balance sheet'
         },
         {
-            id: 2, 
+            id: 2,
             name: 'income statement'
         }
     ]
+
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
+
     return (
         <AuthFormsWrap captionForm="Categorie Account">
             <Form method={method} className="space-y-2">

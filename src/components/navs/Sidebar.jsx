@@ -13,7 +13,7 @@ const itemsSidebar = [
             },
             {
                 title: "dashboard",
-                path: "/admin/dashboard",
+                path: "/admin",
                 icon: <ChartBarSquareIcon className='w-5 h-5' />
             },
             {

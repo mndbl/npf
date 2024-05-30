@@ -1,9 +1,9 @@
-import { Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom";
+import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { DashboardHeader } from "../components/headers/DashboardHeader";
 import { Sidebar } from "../components/navs/Sidebar";
 import { useState } from "react";
 import localforage from "localforage";
-import { Loader } from "../components/loaders/loader";
+
 export async function loader() {
     const userAuth = await localforage.getItem('userAuth')
     if (userAuth.success === false || userAuth.username === '') return redirect('/login')
@@ -13,9 +13,7 @@ export function AdminPage() {
     const { userAuth } = useLoaderData()
     const [theme, setTheme] = useState('dark')
     const toggleTheme = (theme) => setTheme((prevTheme) => prevTheme === 'dark' ? 'light' : 'dark')
-    const navigation = useNavigation()
 
-    if (navigation.state === 'loading') return <Loader />
 
     return (
         <div>

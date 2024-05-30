@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { useFetcher, useLoaderData, useSubmit } from "react-router-dom"
 
-export function SearchBar(params) {
+export function SearchBar() {
     const fetcher = useFetcher()
     const { q } = useLoaderData()
     const submit = useSubmit()

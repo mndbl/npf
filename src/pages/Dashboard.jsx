@@ -1,38 +1,73 @@
+import localforage from "localforage"
 import { StaticCard } from "../components/cards/StaticCard"
 import { SocialAndRecent } from "../components/sections/SocialTrafficAndRecentActivities"
 import { TaskSummaries } from "../components/sections/TaskSummaries"
+import { redirect, useLoaderData } from "react-router-dom"
+import { dataService } from "../services/data-services"
+import { accounts_URL, accounts_categories_URL } from "../config/main.config"
+
+export async function loader() {
+    const userAuth = await localforage.getItem('userAuth')
+    const { accessToken } = userAuth.data
+    if (userAuth.success === false) return redirect('/login')
+    const data = await dataService.getData(`${accounts_URL}/admin-data`, '', {}, accessToken)
+    const accounts = data[0]
+    const latestRegister = data[1]
+    accounts.map((account) => {
+        const debits = account?.register_details ? account?.register_details?.map((reg) => reg.amount_deb).reduce((prev, curr) => prev + parseFloat(curr), 0) : 0
+        const credits = account?.register_details ? account?.register_details?.map((reg) => reg.amount_cre).reduce((prev, curr) => prev + parseFloat(curr), 0) : 0
+        account['debits'] = debits
+        account['credits'] = credits
+        account['balance'] = account.init_deb_balance - account.init_cre_balance + debits - credits
+        return account
+    })
+    const categories = await dataService.getData(`${accounts_categories_URL}/index`, '', {}, accessToken)
+    categories.map((cat) => {
+        cat['relatedAccounts'] = accounts.filter((acc) => acc.account_category_id === cat.id)
+        cat['balanceCategory'] = cat.relatedAccounts.reduce((acc, cur) => acc + cur.balance, 0)
+        return cat
+    })
+    return { accounts, categories, latestRegister }
+}
 
 
-
-const cardsInfo = [
-    {
-        label: 'Visitor',
-        icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>,
-        value: 1257,
-        currency: false
-    },
-    {
-        label: 'Orders',
-        icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>,
-        value: 557,
-        currency: false
-    },
-    {
-        label: 'Sales',
-        icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>,
-        value: 11257,
-        currency: true
-    },
-    {
-        label: 'Balances',
-        icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>,
-        value: 75257,
-        currency: true
-    },
-
-]
 
 export function Dashboard() {
+    const { accounts, categories, latestRegister } = useLoaderData()
+    const incomes = categories.find(cat => cat.name === 'ingresos')
+    const expenses = categories.filter(cat => cat.name === 'gastos' || cat.name === 'remesas' || cat.name === 'retenciones de sueldos').map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
+    const assets = categories.filter(cat => cat.name === 'ahorros' || cat.name === 'cajas' || cat.name === 'cuentas por cobrar' || cat.name === 'inversiones')
+        .map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
+    const liabilities = categories.filter(cat => cat.name === 'cuentas por pagar').map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
+    const utilityOrLoss = parseFloat(-(expenses + incomes.balanceCategory))
+    const generalBalance = parseFloat(assets + liabilities)
+    const cardsInfo = [
+        {
+            label: 'Utility or Loss',
+            icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>,
+            value: utilityOrLoss,
+            currency: true
+        },
+        {
+            label: 'Assets',
+            icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>,
+            value: assets,
+            currency: true
+        },
+        {
+            label: 'Liability',
+            icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>,
+            value: liabilities,
+            currency: true
+        },
+        {
+            label: 'Balance',
+            icon: <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="strokeCurrent text-blue-800 dark:text-gray-800 transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>,
+            value: generalBalance,
+            currency: true
+        },
+
+    ]
 
     return (
         <>
@@ -46,14 +81,14 @@ export function Dashboard() {
             </div>
             {/* <!-- ./Statistics Cards --> */}
 
-            <SocialAndRecent />
+            <SocialAndRecent accounts={accounts} categories={categories} latestRegister={latestRegister} />
 
             {/* <!-- Task Summaries --> */}
             <TaskSummaries />
             {/* <!-- ./Task Summaries --> */}
 
             {/* <!-- Client Table --> */}
-           {/* <Table />*/} 
+            {/* <Table />*/}
             {/* <!-- ./Client Table --> */}
 
             {/* <!-- Contact Form --> */}
@@ -113,37 +148,37 @@ export function Dashboard() {
                     <h4 className="text-lg font-semibold">Have taken ideas & reused components from the following resources:</h4>
                     <ul>
                         <li className="mt-3">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/sidebar-navigation-1" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/sidebar-navigation-1">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Sidebar Navigation</span>
                             </a>
                         </li>
                         <li className="mt-2">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/contact-form-1" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/contact-form-1">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Contact Form</span>
                             </a>
                         </li>
                         <li className="mt-2">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/trello-panel-clone" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://tailwindcomponents.com/component/trello-panel-clone">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Section: Task Summaries</span>
                             </a>
                         </li>
                         <li className="mt-2">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://windmill-dashboard.vercel.app/" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://windmill-dashboard.vercel.app/">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Section: Client Table</span>
                             </a>
                         </li>
                         <li className="mt-2">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://demos.creative-tim.com/notus-js/pages/admin/dashboard.html" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://demos.creative-tim.com/notus-js/pages/admin/dashboard.html">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Section: Social Traffic</span>
                             </a>
                         </li>
                         <li className="mt-2">
-                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://mosaic.cruip.com" target="_blank">
+                            <a className="flex items-center text-blue-700 dark:text-gray-100" href="https://mosaic.cruip.com">
                                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-500 ease-in-out"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span className="inline-flex pl-2">Section: Recent Activities</span>
                             </a>

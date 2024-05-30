@@ -1,4 +1,4 @@
-import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { AuthFormsWrap } from "../../../components/wraps/AuthFormsWrap";
 import { useEffect, useState } from "react";
 import { InputGroup } from "../../../components/inputs/InputGroup";
@@ -6,21 +6,20 @@ import { SelectOptions } from "../../../components/inputs/SelectOptions";
 import localforage from "localforage";
 import { dataService } from "../../../services/data-services";
 import { registers_URL } from "../../../config/main.config";
+import { Loader } from "../../../components/loaders/loader";
 
-export async function action({ params, request }) {
+export async function action() {
     const userAuth = await localforage.getItem('userAuth')
     const { accessToken } = userAuth.useLoaderData
     if (!accessToken) return redirect('/login')
-    const id = params.id
-    const formData = request.formData()
-    const date = formData.get('date-of-register')
-    const description = formData.get('description-of-register')
-    const amount = formData.get('amount-of-register')
-
+  
     return redirect('/admin/registers');
 }
 
 export function RegisterForm() {
+
+    const navigation = useNavigation()
+
     const [method, setMethod] = useState('post');
     const { register, accounts, accessToken } = useLoaderData();
     const [entries, setEntries] = useState(() => {
@@ -41,10 +40,10 @@ export function RegisterForm() {
     const [errorMessage, setErrorMessage] = useState('')
     const [showBanner, setShowBanner] = useState(false)
     const navigate = useNavigate()
-
+    const {id}=register
 
     useEffect(() => {
-        if (register?.id) {
+        if (id) {
             setMethod('put');
         }
     }, []);
@@ -82,13 +81,13 @@ export function RegisterForm() {
     }
 
     const handleSubmit = async (event, accessToken) => {
+
         event.preventDefault();
         const sumDebits = parseFloat(entries['debits'].reduce((prev, curr) => parseFloat(prev) + parseFloat(curr.amount), 0)).toFixed(2)
         const sumCredits = parseFloat(entries['credits'].reduce((prev, curr) => parseFloat(prev) + parseFloat(curr.amount), 0)).toFixed(2)
         const date = document.getElementsByName('date-of-register')[0].value
         const description = document.getElementsByName('description-of-register')[0].value
         const amount = parseFloat(document.getElementsByName('amount-of-register')[0].value).toFixed(2)
-        let newOrUpdateData = {}
         if (sumDebits != sumCredits) return errorDetected('the amount of debits and credits must be equal')
         if (sumDebits != amount) return errorDetected('the amounts of debits must be equal to the register amount')
         if (sumCredits != amount) return errorDetected('the amounts of credits must be equal to the register amount')
@@ -98,14 +97,15 @@ export function RegisterForm() {
             'credits': { ...entries['credits'] }
         }
         if (register?.id) {
-            newOrUpdateData = await dataService.updateData(`${registers_URL}/update/${register.id}`, data, accessToken)
+            await dataService.updateData(`${registers_URL}/update/${register.id}`, data, accessToken)
         } else {
-            newOrUpdateData = await dataService.addData(`${registers_URL}/create`, data, accessToken)
+            await dataService.addData(`${registers_URL}/create`, data, accessToken)
         }
 
         setEntries({ debits: [{ id: 0, account_id: 0, amount: '' }], credits: [{ id: 0, account_id: 0, amount: '' }] })
         return navigate('/admin/registers')
     };
+    if (navigation.state === 'loading') return <Loader />
 
     return (
         <AuthFormsWrap captionForm="Registers">

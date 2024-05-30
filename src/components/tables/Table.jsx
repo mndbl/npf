@@ -33,7 +33,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
             }
         }
         return data.slice(firstPageIndex, lastPageIndex)
-    }, [currentPage, sortBy, isAscending, pageSize])
+    }, [currentPage, sortBy, isAscending, pageSize, data])
 
     return (
         <TableWrap>

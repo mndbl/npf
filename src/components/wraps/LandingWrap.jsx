@@ -5,7 +5,6 @@ import localforage from "localforage"
 
 export async function loader() {
     const userAuth = await localforage.getItem('userAuth')
-    console.log(userAuth);
     return { userAuth }
 }
 

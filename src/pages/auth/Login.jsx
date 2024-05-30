@@ -6,7 +6,13 @@ import { authService } from "../../services/auth-services";
 import localforage from "localforage";
 
 export async function loader() {
-    localforage.removeItem('userAuth')
+    localforage.setItem('userAuth',
+    {
+        username: null,
+        accessToken: null,
+        message: 'user logout',
+        success: false
+    })
     return null
 }
 
@@ -16,11 +22,11 @@ export async function action({ request }) {
     const password = formData.get('user-password')
     const data = { email, password }
     const userAuth = await authService.login(data)
-    if (userAuth.success == false) {
+    if (userAuth.success === false) {
         return redirect('/login')
     }
 
-    return redirect('/admin/dashboard')
+    return redirect('/admin')
 }
 
 export function Login() {

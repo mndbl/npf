@@ -42,11 +42,12 @@ export async function action({ params, request }) {
 export function FormAccount() {
     const { account, accountCategories } = useLoaderData()
     const [method, setMethod] = useState('post')
+    const {id}=account
     useEffect(() => {
-        if (account?.id) {
+        if (id) {
             setMethod('put')
         }
-    }, [])
+    }, [id])
 
     return (
         <AuthFormsWrap captionForm="Accounts">

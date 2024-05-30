@@ -35,7 +35,7 @@ const tableHeads = [
 ]
 
 export function RegistersIndex() {
-    const { registers, q } = useLoaderData()
+    const { registers} = useLoaderData()
     const data = useMemo(() => registers)
 
     

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
-import { Dashboard } from "./pages/Dashboard";
+import { Dashboard, loader as dashboardLoader } from "./pages/Dashboard";
 import { LandingWrap, loader as landingLoader } from "./components/wraps/LandingWrap";
 import { Login, action as loginAction, loader as loginLoader } from "./pages/auth/Login";
 import { Register, action as registerAction, loader as registerLoader } from "./pages/auth/Register";
@@ -19,11 +19,14 @@ import { RegisterShow, loader as registerDataLoader } from "./pages/data/registe
 import { RegisterForm, action as registerDataAction } from "./pages/data/registers/form";
 import { action as destroyRegisterAction } from './pages/data/registers/destroy'
 import { ByPeriodsConsults } from "./pages/data/consults/ByPeriodsConsults";
+import { UserProfile } from "./pages/auth/Profile";
+import { ProfileForm } from "./pages/auth/ProfileForm";
 
 const pathCategories = '/admin/categories-accounts'
 const pathAccounts = '/admin/accounts'
 const pathRegisters = '/admin/registers'
 const pathConsults = '/admin/consults'
+const pathProfile = '/admin/user-profile'
 
 export const router = createBrowserRouter([
     {
@@ -59,11 +62,12 @@ export const router = createBrowserRouter([
         element: <AdminPage />,
         loader: adminLoader,
         children: [
-            { index: true, element: <Dashboard /> },
             {
-                path: 'dashboard',
-                element: <Dashboard />
+                index: true,
+                element: <Dashboard />,
+                loader: dashboardLoader
             },
+
             {
                 path: pathCategories,
                 element: <CategoriesAccountsIndex />,
@@ -145,6 +149,16 @@ export const router = createBrowserRouter([
             {
                 path: `${pathConsults}/by-periods`,
                 element: <ByPeriodsConsults />
+            },
+            {
+                path: pathProfile,
+                element: <UserProfile />,
+                loader: adminLoader
+            },
+            {
+                path: `${pathProfile}/add`,
+                element: <ProfileForm />,
+                loader: adminLoader
             }
         ]
     },
