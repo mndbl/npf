@@ -1,8 +1,11 @@
-import { Link, useLoaderData } from "react-router-dom"
+import { Link, useLoaderData, useNavigation } from "react-router-dom"
+import { Loader } from "../../components/loaders/loader"
 
 export function UserProfile() {
     const { userAuth } = useLoaderData()
     const { profile } = userAuth.data
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
     return (
         // <!-- component -->
         <div className="h-full lg:h-screen -mt-6 bg-gray-200  dark:bg-gray-600   flex flex-wrap items-center  justify-center  ">

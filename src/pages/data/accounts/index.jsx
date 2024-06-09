@@ -13,11 +13,11 @@ export async function loader({ request }) {
     const q = url.searchParams.get('q')
     const accounts = await dataService.getData(`${accounts_URL}/index`, q, { keys: ['name'] }, accessToken)
     const accountsCategories = await dataService.getData(`${accounts_categories_URL}/index`, '', {}, accessToken)
-    const registers = await dataService.getData(`${registers_URL}/index`, q, {keys:['name']}, accessToken)
+    const registers = await dataService.getData(`${registers_URL}/index`, q, { keys: ['name'] }, accessToken)
 
 
     accounts.forEach(acc => {
-        const categorie = accountsCategories.find(cat => cat.id == acc.account_category_id)
+        const categorie = accountsCategories.find(cat => cat.id === acc.account_category_id)
         acc.account_category_id = categorie.name
         const registers_details = registers.map(reg => reg.register_details)
         const registerDebits = registers_details.filter(reg => {
@@ -60,7 +60,7 @@ export async function loader({ request }) {
     });
 
 
-    return { accounts ,q}
+    return { accounts, q }
 }
 
 const tableHeads = [
@@ -98,10 +98,11 @@ const tableHeads = [
 ]
 
 export function AccountsIndex() {
-    const { accounts} = useLoaderData()
+    const { accounts } = useLoaderData()
 
-    const data = useMemo(() =>
-        accounts
+    const data = useMemo(() => {
+        return accounts.filter(acc => parseFloat(acc.actual_balance) !== 0)
+    }, [accounts]
     )
 
 

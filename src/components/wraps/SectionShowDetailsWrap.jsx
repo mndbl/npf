@@ -20,7 +20,8 @@ export function SectionShowDetailsWrap({ children, description, label, textButto
                             <BackButton />
                         </div>
                     </div>
-                    <div className="block w-full overflow-x-auto">
+                
+                    <div className="block max-h-96 w-full overflow-x-auto pt-2">
 
                         {showDetails && children}
                     </div>

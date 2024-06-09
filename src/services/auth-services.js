@@ -21,6 +21,7 @@ const login = async (data) => {
             return res.data
         })
         .catch((err) => {
+            console.log(err);
             data = (err && err.response && err.response.data)
             return data
         })

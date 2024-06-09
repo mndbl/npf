@@ -1,9 +1,10 @@
 import localforage from "localforage";
-import { redirect, useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData, useNavigation } from "react-router-dom";
 import { dataService } from "../../../services/data-services";
 import { accounts_URL, accounts_categories_URL, nf } from "../../../config/main.config";
 import { SectionShowDetailsWrap } from "../../../components/wraps/SectionShowDetailsWrap";
 import { useEffect, useState } from "react";
+import { Loader } from "../../../components/loaders/loader";
 
 export async function loader({ params }) {
     const userAuth = await localforage.getItem('userAuth')
@@ -23,15 +24,18 @@ export function Account() {
         setTotalBalance(balance)
     }, [balance])
 
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
+
     return (
         <SectionShowDetailsWrap
             description={'Account Name: '}
             label={`${account.name} (${nf.format(parseFloat(totalBalance))})`}
             textButton={'see details'}
         >
-            <table className="items-center w-full bg-transparent border-collapse">
-                <thead>
-                    <tr>
+            <table className="items-center w-full bg-transparent border-collapse overflow-y-auto">
+                <thead className="">
+                    <tr className="">
                         <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">date</th>
                         <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">description</th>
                         <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Debits</th>
@@ -39,12 +43,13 @@ export function Account() {
                         <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">Balance</th>
                     </tr>
                 </thead>
-                <tbody className="h-56 overflow-y-auto">
+                <tbody className="">
                     {
                         account.register_details.map((register, index) => {
                             const registerData = account.registers.find((reg) => reg.id === register.register_id)
                             return (
-                                <tr key={`account-regiter-detail-${register.id}`} className="text-gray-700 dark:text-gray-100 hover:bg-gray-600">
+                                <tr key={`account-regiter-detail-${register.id}`} 
+                                className="text-gray-700 dark:text-gray-100 hover:bg-gray-600">
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{registerData.date}</th>
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs p-4 text-left truncate-elipsis w-1/3">{registerData.description}</th>
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{register.amount_deb}</th>

@@ -1,9 +1,10 @@
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useNavigation } from "react-router-dom";
 import { GroupButton } from "../../components/buttons/GroupButton";
 import { InputGroup } from "../../components/inputs/InputGroup";
 import { AuthFormsWrap } from "../../components/wraps/AuthFormsWrap";
 import { authService } from "../../services/auth-services";
 import localforage from "localforage";
+import { Loader } from "../../components/loaders/loader";
 
 export async function loader() {
     localforage.setItem('userAuth',
@@ -33,6 +34,9 @@ export async function action({ request }) {
 
 
 export function Register(params) {
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
+
     return (
         <AuthFormsWrap captionForm="Register">
             <Form method="post">

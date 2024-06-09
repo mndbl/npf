@@ -1,8 +1,9 @@
-import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
+import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import { DashboardHeader } from "../components/headers/DashboardHeader";
 import { Sidebar } from "../components/navs/Sidebar";
 import { useState } from "react";
 import localforage from "localforage";
+import { FloatAddButton } from "../components/buttons/FloatAddButton";
 
 export async function loader() {
     const userAuth = await localforage.getItem('userAuth')
@@ -31,6 +32,7 @@ export function AdminPage() {
                     <Outlet />
                 </div>
             </div>
+            <FloatAddButton/>
         </div >
     )
 }

@@ -1,12 +1,13 @@
 import localforage from "localforage";
 import { AuthFormsWrap } from "../../../components/wraps/AuthFormsWrap";
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import { dataService } from "../../../services/data-services";
 import { accounts_URL } from "../../../config/main.config";
 import { Select } from "../../../components/inputs/Select";
 import { InputGroup } from "../../../components/inputs/InputGroup";
 import { GroupButton } from "../../../components/buttons/GroupButton";
 import { useEffect, useState } from "react";
+import { Loader } from "../../../components/loaders/loader";
 
 export async function action({ params, request }) {
     const userAuth = await localforage.getItem('userAuth')
@@ -42,13 +43,14 @@ export async function action({ params, request }) {
 export function FormAccount() {
     const { account, accountCategories } = useLoaderData()
     const [method, setMethod] = useState('post')
-    const {id}=account
+    const { id } = account
     useEffect(() => {
         if (id) {
             setMethod('put')
         }
     }, [id])
-
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
     return (
         <AuthFormsWrap captionForm="Accounts">
             <Form method={method}>

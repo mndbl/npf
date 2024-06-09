@@ -1,37 +1,51 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Form, useLoaderData, useNavigation } from "react-router-dom";
 import { InputGroup } from "../../components/inputs/InputGroup";
 import { AuthFormsWrap } from "../../components/wraps/AuthFormsWrap";
 import { GroupButton } from "../../components/buttons/GroupButton";
 import { useState } from "react";
 import { dataService } from "../../services/data-services";
 import { avatar_URL } from "../../config/main.config";
+import axios from "axios";
+import { Loader } from "../../components/loaders/loader";
 
 export function ProfileForm({ profile = null }) {
-    const { userAuth } = useLoaderData()
-    const [avatar, setAvatar] = useState(null)
-    const [avatarPreview, setAvatarPreview] = useState(null)
-    const [avatarChange, setAvatarChange] = useState(false)
-    const handleChangeAvatar = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [uploadSuccess, setUploadSuccess] = useState(false);
 
-        reader.onloadend = () => {
-            setAvatar(file);
-            setAvatarPreview(reader.result);
-            setAvatarChange(true)
-        };
-
+    const handleChangeAvatar = (event) => {
+        const file = event.target.files[0];
         if (file) {
-            reader.readAsDataURL(file);
+            setSelectedFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
         }
-    }
-    const handleSubmitAvatar = async (event) => {
+    };
 
+    const handleSubmitAvatar = async (event) => {
         event.preventDefault();
+        if (!selectedFile) {
+            alert('Por favor, selecciona una imagen para subir.');
+            return;
+        }
+
         const formData = new FormData();
-        formData.append('avatar', avatar);
-        dataService.updateData(`${avatar_URL}/update`, formData, userAuth.data.accessToken)
-    }
+        formData.append('avatar', selectedFile);
+
+        try {
+            const response = await axios.post('/api/avatar/update', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            if (response.data) {
+                setUploadSuccess(true);
+            }
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+        }
+    };
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader />
     return (
         <AuthFormsWrap captionForm="Add Profile">
             <form method="put" onSubmit={handleSubmitAvatar}>
@@ -39,18 +53,28 @@ export function ProfileForm({ profile = null }) {
                     <div className="shrink-0">
                         {
                             !profile ?
-                                <img
-                                    id="preview_img"
-                                    className="h-16 w-16 object-cover rounded-full bg-gray-400"
-                                    src={avatarPreview}
-                                    alt=""
-                                />
+                                (
+                                    previewUrl ?
+                                        <img
+                                            id="preview_img"
+                                            className="h-16 w-16 object-cover rounded-full bg-gray-400"
+                                            src={previewUrl}
+                                            alt=""
+                                        />
+                                        :
+                                        <img
+                                            id="preview_img"
+                                            className="h-16 w-16 object-cover rounded-full bg-gray-400"
+                                            src={profile.avatar}
+                                            alt=""
+                                        />
+                                )
                                 :
                                 <img
                                     id="preview_img"
                                     className="h-16 w-16 object-cover rounded-full"
                                     src="https://lh3.googleusercontent.com/a-/AFdZucpC_6WFBIfaAbPHBwGM9z8SxyM1oV4wB4Ngwp_UyQ=s96-c"
-                                    alt="Current profile photo"
+                                    alt="user avatar"
                                 />
                         }
                     </div>
@@ -65,7 +89,7 @@ export function ProfileForm({ profile = null }) {
                             Choose avatar
                         </label>
                         {
-                            avatarChange && <GroupButton cancelButton={false} />
+                            previewUrl && <GroupButton cancelButton={false} />
                         }
                     </div>
                 </div>

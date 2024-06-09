@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { AddButton } from "../buttons/AddButton.jsx";
 import { TableWrap } from "../wraps/TableWrap";
 import { Pagination } from "./Pagination.jsx"
 import { TRow } from "./TRow.jsx";
@@ -23,7 +22,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
-        if (sortBy != '') {
+        if (sortBy !== '') {
             if (isAscending === true) {
                 return data.slice().sort((a, b) => a[sortBy].localeCompare(b[sortBy]))
                     .slice(firstPageIndex, lastPageIndex)
@@ -39,17 +38,17 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
         <TableWrap>
             <table className="w-full">
                 <caption
-                    className="text-lg px-4 py-3 text-center font-bold tracking-wide text-gray-500 dark:text-gray-100 uppercase border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    className="text-lg px-2 py-2 text-left font-bold tracking-wide text-gray-500 dark:text-gray-100 uppercase border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                     <SearchBar />
                     {captionTable}
-                    <div className="float-right">
+                    {/* <div className="float-right">
                         <AddButton />
-                    </div>
+                    </div> */}
                 </caption>
                 <thead className="">
                     <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-100 dark:bg-gray-800">
                         {tableHeads.map((hd) =>
-                            <th className="px-4 py-3" key={`th-table-${hd.header}`}>
+                            <th className="px-2 " key={`th-table-${hd.header}`}>
                                 {
                                     hd.header === 'id' ? hd.header :
                                         <button onClick={() => handleSortBy(hd.accessor)}

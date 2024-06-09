@@ -2,9 +2,10 @@ import localforage from "localforage"
 import { StaticCard } from "../components/cards/StaticCard"
 import { SocialAndRecent } from "../components/sections/SocialTrafficAndRecentActivities"
 import { TaskSummaries } from "../components/sections/TaskSummaries"
-import { redirect, useLoaderData } from "react-router-dom"
+import { redirect, useLoaderData, useNavigation } from "react-router-dom"
 import { dataService } from "../services/data-services"
 import { accounts_URL, accounts_categories_URL } from "../config/main.config"
+import { Loader } from "../components/loaders/loader"
 
 export async function loader() {
     const userAuth = await localforage.getItem('userAuth')
@@ -68,7 +69,8 @@ export function Dashboard() {
         },
 
     ]
-
+    const navigation = useNavigation()
+    if (navigation.state === 'loading') return <Loader/>
     return (
         <>
             {/* <!-- Statistics Cards --> */}

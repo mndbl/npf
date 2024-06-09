@@ -12,8 +12,8 @@ export async function action() {
     const userAuth = await localforage.getItem('userAuth')
     const { accessToken } = userAuth.useLoaderData
     if (!accessToken) return redirect('/login')
-  
-    return redirect('/admin/registers');
+
+    return redirect(-1);
 }
 
 export function RegisterForm() {
@@ -40,7 +40,7 @@ export function RegisterForm() {
     const [errorMessage, setErrorMessage] = useState('')
     const [showBanner, setShowBanner] = useState(false)
     const navigate = useNavigate()
-    const {id}=register
+    const { id } = register
 
     useEffect(() => {
         if (id) {
@@ -51,7 +51,7 @@ export function RegisterForm() {
     useEffect(() => {
         const showBanner = errorMessage != '' && setTimeout(() => {
             setShowBanner(false)
-            setErrorMessage(prevError => prevError = '')
+            setErrorMessage((prevError) => prevError = '')
         }, 5000);
 
         return () => clearTimeout(showBanner)
@@ -103,7 +103,7 @@ export function RegisterForm() {
         }
 
         setEntries({ debits: [{ id: 0, account_id: 0, amount: '' }], credits: [{ id: 0, account_id: 0, amount: '' }] })
-        return navigate('/admin/registers')
+        return navigate(-1)
     };
     if (navigation.state === 'loading') return <Loader />
 
@@ -175,8 +175,7 @@ export function RegisterForm() {
 
                                 <input className="text-gray-100 dark:text-gray-800 appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                     type="number"
-                                    value={debit.amount}
-                                    defaultValue={debit.debits}
+                                    value={debit.amount > 0 ? debit.amount : document.getElementsByName('amount-of-register').value}
                                     onChange={(e) => handleEntryChange(index, 'debits', 'amount', e.target.value)}
                                     placeholder="debit amount"
                                     step={0.01}
@@ -206,7 +205,7 @@ export function RegisterForm() {
 
                             <input className="text-gray-100 dark:text-gray-800 appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                 type="number"
-                                value={credit.amount}
+                                value={credit.amount > 0 ? credit.amount : document.getElementsByName('amount-of-register').value}
                                 onChange={(e) => handleEntryChange(index, 'credits', 'amount', e.target.value)}
                                 placeholder="credit amount"
                                 step={0.01}

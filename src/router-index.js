@@ -148,7 +148,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: `${pathConsults}/by-periods`,
-                element: <ByPeriodsConsults />
+                element: <ByPeriodsConsults />,
+                loader: dashboardLoader
             },
             {
                 path: pathProfile,
