@@ -21,6 +21,7 @@ import { action as destroyRegisterAction } from './pages/data/registers/destroy'
 import { ByPeriodsConsults } from "./pages/data/consults/ByPeriodsConsults";
 import { UserProfile } from "./pages/auth/Profile";
 import { ProfileForm } from "./pages/auth/ProfileForm";
+import { Historicals } from "./pages/data/consults/historicals/Historicals";
 
 const pathCategories = '/admin/categories-accounts'
 const pathAccounts = '/admin/accounts'
@@ -150,6 +151,11 @@ export const router = createBrowserRouter([
                 path: `${pathConsults}/by-periods`,
                 element: <ByPeriodsConsults />,
                 loader: dashboardLoader
+            },
+            {
+                path: `${pathConsults}/historicals`,
+                element: <Historicals />,
+                loader: adminLoader
             },
             {
                 path: pathProfile,

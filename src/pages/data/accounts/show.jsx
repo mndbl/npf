@@ -20,7 +20,7 @@ export function Account() {
     const { account } = useLoaderData()
     const [totalBalance, setTotalBalance] = useState(0)
     let balance = 0
-    useEffect(() => {
+   useEffect(() => {
         setTotalBalance(balance)
     }, [balance])
 
@@ -48,8 +48,8 @@ export function Account() {
                         account.register_details.map((register, index) => {
                             const registerData = account.registers.find((reg) => reg.id === register.register_id)
                             return (
-                                <tr key={`account-regiter-detail-${register.id}`} 
-                                className="text-gray-700 dark:text-gray-100 hover:bg-gray-600">
+                                <tr key={`account-regiter-detail-${register.id}`}
+                                    className="text-gray-700 dark:text-gray-100 hover:bg-gray-600">
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{registerData.date}</th>
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs p-4 text-left truncate-elipsis w-1/3">{registerData.description}</th>
                                     <th className=" capitalize border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{register.amount_deb}</th>

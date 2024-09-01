@@ -1,7 +1,13 @@
+import { useEffect } from "react";
 import { nf } from "../../config/main.config";
 import { Link } from "react-router-dom";
 
 export function SocialAndRecent({ categories, latestRegister }) {
+    useEffect(() => {
+        categories.sort((a, b) => {
+            return a.name - b.name
+        })
+    })
     return (
         <section id='social-traffic-recent-activities' className="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
 
@@ -108,21 +114,21 @@ const SubTable = ({ relatedAccounts }) => {
                     <th className="px-1 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-2 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Debits</th>
                     <th className="px-1 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-2 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Credits</th>
                     <th className="px-1 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-2 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Balance</th>
-
                 </tr>
             </thead>
             <tbody>
                 {
                     relatedAccounts.map((account) => {
-                        if (account.balance > 0.001 || account.balance < -0.001) {
+                        if (account.balanceAccount > 0.001 || account.balanceAccount < -0.001) {
                             return (
                                 <tr key={`account-${account.name}-data-by-categorie`}>
                                     <td className="capitalize border-t-0 align-middle border-l-0 border-r-0 text-xs py-1 text-left">{account.name}</td>
                                     <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.init_deb_balance)}</td>
                                     <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.init_cre_balance)}</td>
-                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.debits.toFixed(2))}</td>
-                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.credits.toFixed(2))}</td>
-                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format((account.balance).toFixed(2))}</td>
+                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{parseFloat(account.debit) != null ? nf.format(account.debits) : 0}</td>
+                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{parseFloat(account.credit) != null ? nf.format(account.credits) : 0}</td>
+
+                                    <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format((account.balanceAccount).toFixed(2))}</td>
                                 </tr>
                             )
                         }

@@ -26,7 +26,7 @@ const menuItems = [
     },
     {
         path: '/admin',
-        name: 'Dashboard',
+        name: 'Admin',
         isAdmyn: true
     },
 

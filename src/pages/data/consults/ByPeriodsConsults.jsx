@@ -1,102 +1,139 @@
-import { useLoaderData } from "react-router-dom"
-import { SubTable } from "../../../components/tables/SubTable"
+import { useLoaderData, useNavigation } from "react-router-dom"
+import { TableWrap } from "../../../components/wraps/TableWrap"
+import { months, nf } from "../../../config/main.config"
+import { useEffect, useState } from "react"
+import { Loader } from "../../../components/loaders/loader"
 
-const months = [
-    {
 
-    },
-    {
-        name: 'ene',
-        dateFrom: '01/01/2024',
-        dateTo: '01/31/2024'
-    },
-    {
-        name: 'feb',
-        dateFrom: '02/01/2024',
-        dateTo: '02/29/2024'
-    },
-    {
-        name: 'mar',
-        dateFrom: '03/01/2024',
-        dateTo: '03/31/2024'
-    },
-    {
-        name: 'apr',
-        dateFrom: '04/01/2024',
-        dateTo: '04/30/2024'
-    },
-    {
-        name: 'may',
-        dateFrom: '05/01/2024',
-        dateTo: '05/31/2024'
-    },
-    {
-        name: 'jun',
-        dateFrom: '06/01/2024',
-        dateTo: '06/30/2024'
-    },
-    {
-        name: 'jul',
-        dateFrom: '07/01/2024',
-        dateTo: '07/31/2024'
-    },
-    {
-        name: 'aug',
-        dateFrom: '08/01/2024',
-        dateTo: '08/31/2024'
-    },
-    {
-        name: 'sep',
-        dateFrom: '09/01/2024',
-        dateTo: '09/30/2024'
-    },
-    {
-        name: 'oct',
-        dateFrom: '10/01/2024',
-        dateTo: '10/31/2024'
-    },
-    {
-        name: 'nov',
-        dateFrom: '11/01/2024',
-        dateTo: '11/31/2024'
-    },
-    {
-        name: 'dic',
-        dateFrom: '12/01/2024',
-        dateTo: '12/31/2024'
-    },
-]
+const theadClass = "w-20 text-center px-1 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-2 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
 
 export function ByPeriodsConsults(params) {
-    const { accounts, categories, latestRegister } = useLoaderData()
+    const navigation = useNavigation()
+    const { accounts } = useLoaderData()
+    const accountsCategories = Object.keys(accounts)
+    if (navigation.state === 'loading') return <Loader />
     return (
-        <div className="m-2 space-y-2">
-            {
-                categories.map((cat, index) => {
+        <TableWrap>
+            <table className="w-full text-xs">
+                <thead>
+                    <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-100 dark:bg-gray-800">
+                        <th className={theadClass} scope="col"
+                            id={`category-account`}>Category Account</th>
+                        {
+                            months.map(month => {
+                                return (
+                                    <th
+                                        scope="col"
+                                        id={`month-${month.name}`}
+                                        key={'by-periods-theads' + month.name}
+                                        className={theadClass}>
+                                        {month.name}
+                                    </th>
+                                )
+                            })
+                        }
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                    {
+                        accountsCategories.map(cat => {
+                            return (
+                                <MainTableRow key={`consults-by-periods-category-${cat}`} cat={cat} accounts={accounts} />
+                            )
+                        }
+                        )
 
-                    const relatedAccounts = cat.relatedAccounts
-                    const balanceCategory = cat.balanceCategory
-                    return (
-                        <div key={`items-category-accounts-${cat.name}`}
-                            className="group flex flex-col gap-2 rounded-lg bg-gray-600 px-5 py-1 text-white"
-                            tabIndex={index + 1}
-                        >
-                            <div className="flex cursor-pointer items-center justify-between">
-                                <span className="capitalize"> {`${cat.name} (${nf.format(balanceCategory.toFixed(2))})`} </span>
-                                <img
-                                    src="https://upload.wikimedia.org/wikipedia/commons/9/96/Chevron-icon-drop-down-menu-WHITE.png"
-                                    className="h-2 w-3 transition-all duration-500 group-focus:-rotate-180"
-                                />
-                            </div>
-                            <div
-                                className="invisible h-auto max-h-0 overflow-y-auto items-center opacity-0 transition-all group-focus:visible group-focus:max-h-screen group-focus:opacity-100 group-focus:duration-1000"
+                    }
+                </tbody>
+            </table>
+        </TableWrap>
+    )
+}
+
+
+
+function MainTableRow({ cat, accounts }) {
+    const [open, setOpen] = useState(false)
+    const [openCat, setOpenCat] = useState(null)
+    const handleOpenRowCategories = (cat) => {
+        setOpenCat(cat)
+    }
+
+    useEffect(() => {
+        openCat === cat ? setOpen(true) : setOpen(false)
+
+    }, [openCat])
+
+    return (
+        <>
+            <tr onClick={() => { handleOpenRowCategories(openCat === cat ? null : cat) }}
+                className="cursor:pointer capitalize bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+                id={`category-row-${cat}`}>
+                <td className="pl-2" >{`${cat}`}</td>
+                {
+                    months.map(month => {
+                        const amount = accounts[cat].balance_cat[month.name] ? accounts[cat].balance_cat[month.name] : 0
+                        return (
+                            <td className="text-right pr-2"
+                                key={`category-row-${cat}
+                                -${month.name}`}
+                                headers={`category-row-${cat}`}
                             >
-                                <SubTable data={relatedAccounts}  />
-                            </div>
-                        </div>
+                                {nf.format(Math.abs(amount))}
+                            </td>
+                        )
+                    }
                     )
-                })
+                }
+            </tr>
+            {
+                open && <DetailsTable accountsDetails={accounts[cat]} />
             }
-        </div>
+        </>
+    )
+}
+
+function DetailsTable({ accountsDetails, setBalanceCat }) {
+    const accs = Object.keys(accountsDetails)
+    return (
+        <>
+            {accs.map((acc, key) => {
+                if (acc != 'balance_cat') return (
+                    <SubTableRow
+                        key={`sub-table-row-${accountsDetails[acc]}-${key}`}
+                        accountsDetails={accountsDetails}
+                        acc={acc}
+                        setBalanceCat={setBalanceCat}
+                    />
+                )
+            }
+            )
+            }
+        </>
+
+    )
+}
+
+function SubTableRow({ acc, accountsDetails }) {
+    return (
+        <tr className="capitalize  bg-gray-100 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400"
+            key={`sub-table-row-details-${acc}`}>
+            <td className="pl-1"
+            headers={`category-row-${accountsDetails[acc]}-${acc}`}>{acc}</td>
+            {
+                months.map(month => {
+                    let amount = accountsDetails[acc][month.name] ? accountsDetails[acc][month.name].balance : 0
+                    if (amount < 0) amount = Math.abs(amount)
+                    return (
+                        <td className="text-right pr-2"
+                            key={`amount-monthly-${accountsDetails[acc][month.name]}-${month.name}`}
+                            headers={`category-row-${accountsDetails[acc]}-${acc}`}
+                        >{nf.format(amount)}</td>
+
+                    )
+                }
+                )
+            }
+        </tr>
     )
 }

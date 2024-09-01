@@ -4,37 +4,25 @@ import { SocialAndRecent } from "../components/sections/SocialTrafficAndRecentAc
 import { TaskSummaries } from "../components/sections/TaskSummaries"
 import { redirect, useLoaderData, useNavigation } from "react-router-dom"
 import { dataService } from "../services/data-services"
-import { accounts_URL, accounts_categories_URL } from "../config/main.config"
+import {  admin_URL} from "../config/main.config"
 import { Loader } from "../components/loaders/loader"
+import { Charts } from "../components/sections/Charts"
 
 export async function loader() {
     const userAuth = await localforage.getItem('userAuth')
     const { accessToken } = userAuth.data
     if (userAuth.success === false) return redirect('/login')
-    const data = await dataService.getData(`${accounts_URL}/admin-data`, '', {}, accessToken)
+    const data = await dataService.getData(`${admin_URL}/admin-data`, '', {}, accessToken)
     const accounts = data[0]
     const latestRegister = data[1]
-    accounts.map((account) => {
-        const debits = account?.register_details ? account?.register_details?.map((reg) => reg.amount_deb).reduce((prev, curr) => prev + parseFloat(curr), 0) : 0
-        const credits = account?.register_details ? account?.register_details?.map((reg) => reg.amount_cre).reduce((prev, curr) => prev + parseFloat(curr), 0) : 0
-        account['debits'] = debits
-        account['credits'] = credits
-        account['balance'] = account.init_deb_balance - account.init_cre_balance + debits - credits
-        return account
-    })
-    const categories = await dataService.getData(`${accounts_categories_URL}/index`, '', {}, accessToken)
-    categories.map((cat) => {
-        cat['relatedAccounts'] = accounts.filter((acc) => acc.account_category_id === cat.id)
-        cat['balanceCategory'] = cat.relatedAccounts.reduce((acc, cur) => acc + cur.balance, 0)
-        return cat
-    })
+    const categories = data[2]
     return { accounts, categories, latestRegister }
 }
 
 
 
 export function Dashboard() {
-    const { accounts, categories, latestRegister } = useLoaderData()
+    const { categories, latestRegister } = useLoaderData()
     const incomes = categories.find(cat => cat.name === 'ingresos')
     const expenses = categories.filter(cat => cat.name === 'gastos' || cat.name === 'remesas' || cat.name === 'retenciones de sueldos').map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
     const assets = categories.filter(cat => cat.name === 'ahorros' || cat.name === 'cajas' || cat.name === 'cuentas por cobrar' || cat.name === 'inversiones')
@@ -70,7 +58,7 @@ export function Dashboard() {
 
     ]
     const navigation = useNavigation()
-    if (navigation.state === 'loading') return <Loader/>
+    if (navigation.state === 'loading') return <Loader />
     return (
         <>
             {/* <!-- Statistics Cards --> */}
@@ -81,9 +69,12 @@ export function Dashboard() {
                     })
                 }
             </div>
+
+            {/* <!-- charts --> */}
+            <Charts />
             {/* <!-- ./Statistics Cards --> */}
 
-            <SocialAndRecent accounts={accounts} categories={categories} latestRegister={latestRegister} />
+            <SocialAndRecent categories={categories} latestRegister={latestRegister} />
 
             {/* <!-- Task Summaries --> */}
             <TaskSummaries />

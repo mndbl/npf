@@ -1,5 +1,5 @@
 import { SidebarItems } from "./SidebarItems"
-import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon, HomeIcon } from "@heroicons/react/24/solid";
+import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon, HomeIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
 
 const itemsSidebar = [
     {
@@ -59,9 +59,14 @@ const itemsSidebar = [
             //     icon: <ViewColumnsIcon className="w-5 h-5" />
             // },
             {
+                title: 'historicals',
+                path: '/admin/consults/historicals',
+                icon: <ClockIcon className="w-5 h-5" />
+            },
+            {
                 title: 'by period',
                 path: '/admin/consults/by-periods',
-                icon: <ClockIcon className="w-5 h-5" />
+                icon: <CalendarDaysIcon className="w-5 h-5" />
             },
         ]
     }

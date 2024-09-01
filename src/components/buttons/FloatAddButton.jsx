@@ -17,21 +17,21 @@ export function FloatAddButton() {
             </div>
             {/* <!-- registers --> */}
             <div className="tooltip absolute rounded-full transition-all duration-[0.2s] ease-out scale-y-0 group-hover:scale-y-100 group-hover:-translate-x-16   flex  p-2 hover:p-3 bg-green-300 scale-100 hover:bg-green-400 text-white">
-                <span class="tooltip-text bg-blue-500">Add Register</span>
+                <span className="tooltip-text bg-blue-500">Add Register</span>
                 <Link to={'registers/add'}>
                     <ArchiveBoxIcon className="w-5 h-5" />
                 </Link>
             </div>
             {/* <!-- accounts --> */}
             <div className="tooltip absolute rounded-full transition-all duration-[0.2s] ease-out scale-x-0 group-hover:scale-x-100 group-hover:-translate-y-16  flex  p-2 hover:p-3 bg-blue-300 hover:bg-blue-400  text-white">
-                <span class="tooltip-text bg-blue-500">Add Account</span>
+                <span className="tooltip-text bg-blue-500">Add Account</span>
                 <Link to={'accounts/add'}>
                     <WalletIcon className="w-5 h-5" />
                 </Link>
             </div>
             {/* <!-- category account --> */}
             <div className="tooltip absolute rounded-full transition-all duration-[0.2s] ease-out scale-x-0 group-hover:scale-x-100 group-hover:-translate-y-14 group-hover:-translate-x-14   flex  p-2 hover:p-3 bg-yellow-300 hover:bg-yellow-400 text-white">
-                <span class="tooltip-text bg-blue-500">Add Category Account</span>
+                <span className="tooltip-text bg-blue-500">Add Category Account</span>
                 <Link to={'categories-accounts/add'}>
                     <ViewColumnsIcon className="w-5 h-5" />
                 </Link>
