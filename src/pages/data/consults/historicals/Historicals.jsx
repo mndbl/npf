@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { Table } from "../../../../components/tables/Table"
-import { Select } from "../../../../components/inputs/Select"
 import { dataService } from "../../../../services/data-services"
 import { admin_URL, consults_URL } from "../../../../config/main.config"
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useSearchParams, } from "react-router-dom"
 import { InputLabel } from "../../../../components/inputs/InputLabel"
 
 const tableHeads = [
@@ -28,6 +27,8 @@ export function Historicals() {
     const [year, SetYear] = useState('')
     const [years, setYears] = useState([])
     const [historicals, setHistoricals] = useState([])
+    const [searchParams] = useSearchParams();
+    const q = searchParams.get('q') || '';
 
 
     useEffect(() => {
@@ -36,20 +37,25 @@ export function Historicals() {
             setYears(() => yearsData)
         }
         yearsHistoricals();
-    }, [])
+    }, [userAuth])
 
     useEffect(() => {
         const historicalsData = async () => {
-            const historicalsData = await dataService.getData(`${consults_URL}/historicals/${year}`, '', {}, userAuth.data.accessToken)
+            const historicalsData = await dataService.getData(`${consults_URL}/historicals/${year}`, q, { keys: ['description'] }, userAuth.data.accessToken)
             setHistoricals(() => historicalsData)
         }
         year && historicalsData();
-    }, [year])
+    }, [year, q, userAuth])
+
+    useEffect(() => {
+        document.getElementsByName('q').value = q
+    }, [q])
 
     const data = useMemo(() => historicals, [historicals])
     return (
         <div className="border-2 border-gray-50 border-opacity-20 m-2 rounded-lg p-6">
-            <h1 className="text-gray-700 dark:text-white text-center font-bold text-4xl shadow-md p-2">Historicals {year}</h1>
+            <h1 className="text-gray-700 dark:text-white text-center font-bold text-4xl shadow-md p-2">
+                Historicals {year} {q}</h1>
             <div className="m-2 w-1/5">
 
                 <div className='mb-3 space-y-2 w-full text-xs'>
