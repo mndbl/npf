@@ -31,10 +31,16 @@ const destroyData = async (uriSend, currAccToken) => {
     return deleteData
 }
 
+const historicalsGenerate = async(uriSend, currAccToken)=>{
+    const generateHistoricals = await axios.get(uriSend, authHeader(currAccToken))
+    return generateHistoricals
+}
+
 export const dataService = {
     getData,
     getDataId,
     addData,
     updateData,
-    destroyData
+    destroyData, 
+    historicalsGenerate
 }

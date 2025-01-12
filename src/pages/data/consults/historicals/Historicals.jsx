@@ -2,8 +2,21 @@ import { useEffect, useMemo, useState } from "react"
 import { Table } from "../../../../components/tables/Table"
 import { dataService } from "../../../../services/data-services"
 import { admin_URL, consults_URL } from "../../../../config/main.config"
-import { useLoaderData, useSearchParams, } from "react-router-dom"
+import { Form, redirect, useLoaderData, useSearchParams, } from "react-router-dom"
 import { InputLabel } from "../../../../components/inputs/InputLabel"
+import { Button } from "../../../../components/buttons/Button"
+import localforage from "localforage"
+
+export async function action() {
+    const userAuth = await localforage.getItem('userAuth')
+    const { accessToken } = userAuth.data
+    if (!accessToken) return redirect('/login')
+    const today = new Date();
+    const prevYear = today.getFullYear()
+    const yearToHistoricals = Number(prevYear) - 1
+    const response = await dataService.historicalsGenerate(`${admin_URL}/transf-to-historicals/${yearToHistoricals}`, accessToken)
+    return redirect('/admin/consults/historicals')
+}
 
 const tableHeads = [
     {
@@ -54,8 +67,25 @@ export function Historicals() {
     const data = useMemo(() => historicals, [historicals])
     return (
         <div className="border-2 border-gray-50 border-opacity-20 m-2 rounded-lg p-6">
-            <h1 className="text-gray-700 dark:text-white text-center font-bold text-4xl shadow-md p-2">
-                Historicals {year} {q}</h1>
+            <div className="flex flex-row justify-between items-center">
+                <h1 className="text-gray-700 dark:text-white text-center font-bold text-4xl shadow-md p-2">
+                    Historicals {year} {q}
+                </h1>
+                <Form
+                    method="post" action={`/admin/historicals/generate`}
+                    onSubmit={(event) => {
+                        if (
+                            !window.confirm(
+                                "Please confirm you want make the historicals."
+                            )
+                        ) {
+                            event.preventDefault();
+                        }
+                    }}
+                >
+                    <Button text="Generate" />
+                </Form>
+            </div>
             <div className="m-2 w-1/5">
 
                 <div className='mb-3 space-y-2 w-full text-xs'>

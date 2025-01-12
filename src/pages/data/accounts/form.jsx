@@ -30,7 +30,6 @@ export async function action({ params, request }) {
         init_cre_balance,
         cut_off_date,
     }
-    console.log(data);
     if (id) {
         await dataService.updateData(`${accounts_URL}/update/${id}`, data, accessToken)
     } else {

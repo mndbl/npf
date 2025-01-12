@@ -21,7 +21,7 @@ import { action as destroyRegisterAction } from './pages/data/registers/destroy'
 import { ByPeriodsConsults } from "./pages/data/consults/ByPeriodsConsults";
 import { UserProfile } from "./pages/auth/Profile";
 import { ProfileForm } from "./pages/auth/ProfileForm";
-import { Historicals } from "./pages/data/consults/historicals/Historicals";
+import { Historicals, action as historicalsAction } from "./pages/data/consults/historicals/Historicals";
 import { ShowHistoricalDetails } from "./pages/data/consults/historicals/show";
 
 const pathCategories = '/admin/categories-accounts'
@@ -157,6 +157,10 @@ export const router = createBrowserRouter([
                 path: `${pathConsults}/historicals`,
                 element: <Historicals />,
                 loader: adminLoader
+            },
+            {
+                path: `/admin/historicals/generate`,
+                action: historicalsAction
             },
             {
                 path: `${pathConsults}/historicals/:id`,
