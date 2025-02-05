@@ -6,6 +6,7 @@ import { Form, redirect, useLoaderData, useSearchParams, } from "react-router-do
 import { InputLabel } from "../../../../components/inputs/InputLabel"
 import { Button } from "../../../../components/buttons/Button"
 import localforage from "localforage"
+import { AccountsByCategories } from "../../../../components/sections/AccountsByCategories"
 
 export async function action() {
     const userAuth = await localforage.getItem('userAuth')
@@ -40,6 +41,7 @@ export function Historicals() {
     const [year, SetYear] = useState('')
     const [years, setYears] = useState([])
     const [historicals, setHistoricals] = useState([])
+    const [historicalsCategories, setHistoricalsCategories] = useState([])
     const [searchParams] = useSearchParams();
     const q = searchParams.get('q') || '';
 
@@ -55,7 +57,8 @@ export function Historicals() {
     useEffect(() => {
         const historicalsData = async () => {
             const historicalsData = await dataService.getData(`${consults_URL}/historicals/${year}`, q, { keys: ['description'] }, userAuth.data.accessToken)
-            setHistoricals(() => historicalsData)
+            setHistoricals(() => historicalsData[0])
+            setHistoricalsCategories(() => historicalsData[1])
         }
         year && historicalsData();
     }, [year, q, userAuth])
@@ -115,6 +118,7 @@ export function Historicals() {
                     data={data}
                 />
             }
+            <AccountsByCategories categories={historicalsCategories} />
         </div>
     )
 }

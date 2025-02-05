@@ -22,7 +22,7 @@ import { ByPeriodsConsults } from "./pages/data/consults/ByPeriodsConsults";
 import { UserProfile } from "./pages/auth/Profile";
 import { ProfileForm } from "./pages/auth/ProfileForm";
 import { Historicals, action as historicalsAction } from "./pages/data/consults/historicals/Historicals";
-import { ShowHistoricalDetails } from "./pages/data/consults/historicals/show";
+import { ShowHistoricalDetails, loader as showHistoricalDetailsLoader } from "./pages/data/consults/historicals/show";
 
 const pathCategories = '/admin/categories-accounts'
 const pathAccounts = '/admin/accounts'
@@ -165,7 +165,7 @@ export const router = createBrowserRouter([
             {
                 path: `${pathConsults}/historicals/:id`,
                 element: <ShowHistoricalDetails />,
-                loader: adminLoader
+                loader: showHistoricalDetailsLoader
             },
             {
                 path: pathProfile,

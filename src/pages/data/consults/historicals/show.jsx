@@ -2,7 +2,7 @@ import localforage from "localforage";
 import { redirect, useLoaderData, useNavigation } from "react-router-dom";
 import { useMemo } from "react";
 import { dataService } from "../../../../services/data-services";
-import { accounts_URL, consults_URL, nf } from "../../../../config/main.config";
+import { accounts_URL, admin_URL, consults_URL, nf } from "../../../../config/main.config";
 import { SectionShowDetailsWrap } from "../../../../components/wraps/SectionShowDetailsWrap";
 import { Loader } from "../../../../components/loaders/loader";
 import { Table } from "../../../../components/tables/Table";
@@ -12,8 +12,10 @@ export async function loader({ params, request }) {
     if (!userAuth) return redirect('/login')
     const { accessToken } = userAuth.data
     const url = new URL(request.url)
+    console.log('url' + url);
     const id = params.id
-    const register = id ? await dataService.getDataId(`${consults_URL}/show/${id}`, accessToken) : {}
+    const register = id ? await dataService.getDataId(`${admin_URL}/show/${id}`, accessToken) : {}
+    
     const accounts = await dataService.getData(`${accounts_URL}/index`, '', {}, accessToken)
     if (id && url.pathname.slice(-4) !== 'edit') {
         register.register_details.map(det =>
@@ -42,6 +44,7 @@ const tableHeads = [
 export function ShowHistoricalDetails() {
     const navigation = useNavigation()
     const { register } = useLoaderData()
+    console.log('register', register)
     const { register_details } = register
     const data = useMemo(() => { return register_details }, [register_details])
     if (navigation.state === 'loading') return <Loader />
