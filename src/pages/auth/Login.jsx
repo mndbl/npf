@@ -23,7 +23,6 @@ export async function action({ request }) {
     const password = formData.get('user-password')
     const data = { email, password }
     const userAuth = await authService.login(data)
-    console.log(userAuth);
     if (userAuth.success === false) {
         return redirect('/login')
     }
