@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from "react"
 import { Table } from "../../../../components/tables/Table"
 import { dataService } from "../../../../services/data-services"
-import { admin_URL, consults_URL } from "../../../../config/main.config"
+import { admin_URL, consults_URL, nf } from "../../../../config/main.config"
 import { Form, redirect, useLoaderData, useSearchParams, } from "react-router-dom"
 import { InputLabel } from "../../../../components/inputs/InputLabel"
 import { Button } from "../../../../components/buttons/Button"
 import localforage from "localforage"
 import { AccountsByCategories } from "../../../../components/sections/AccountsByCategories"
+import { TableWrap } from "../../../../components/wraps/TableWrap"
+import { SectionShowDetailsWrap } from "../../../../components/wraps/SectionShowDetailsWrap"
+import TBodyAccountsHistoricalsShow from "../../../../components/tables/TBodyAccountsHistoricalsShow"
 
 export async function action() {
     const userAuth = await localforage.getItem('userAuth')
@@ -44,7 +47,12 @@ export function Historicals() {
     const [historicalsCategories, setHistoricalsCategories] = useState([])
     const [searchParams] = useSearchParams();
     const q = searchParams.get('q') || '';
-    
+    const [showAccountDetails, setShowAccountDetails] = useState([])
+    const [totalBalance, setTotalBalance] = useState(0)
+    let balance = 0
+    useEffect(() => {
+        setTotalBalance(balance)
+    }, [balance])
     // Add loading and error states
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -93,7 +101,6 @@ export function Historicals() {
     }, [q])
 
     const data = useMemo(() => historicals, [historicals])
-
     return (
         <div className="border-2 border-gray-50 border-opacity-20 m-2 rounded-lg p-6" role="main">
             <div className="flex flex-row justify-between items-center">
@@ -101,7 +108,7 @@ export function Historicals() {
                     Historicals {year} {q}
                 </h1>
                 <Form
-                    method="post" 
+                    method="post"
                     action={`/admin/historicals/generate`}
                     onSubmit={(event) => {
                         if (!window.confirm("Please confirm you want to generate the historicals.")) {
@@ -110,8 +117,8 @@ export function Historicals() {
                     }}
                     aria-label="Generate historicals form"
                 >
-                    <Button 
-                        text="Generate" 
+                    <Button
+                        text="Generate"
                         disabled={isLoading}
                         aria-busy={isLoading}
                     />
@@ -140,9 +147,9 @@ export function Historicals() {
                     >
                         <option value="">Select a year</option>
                         {years.map((opt) => (
-                            <option 
+                            <option
                                 key={`select-option-${opt.year}`}
-                                className='text-gray-100 dark:text-gray-800' 
+                                className='text-gray-100 dark:text-gray-800'
                                 value={opt.year}
                             >
                                 {opt.year}
@@ -160,17 +167,55 @@ export function Historicals() {
             ) : (
                 <>
                     {year !== '' && (
-                        <Table
-                            captionTable="Register index"
-                            tableHeads={tableHeads}
-                            data={data}
-                            aria-label="Historical records table"
-                        />
+                        <>
+                            <Table
+                                captionTable="Register index"
+                                tableHeads={tableHeads}
+                                data={data}
+                                aria-label="Historical records table"
+                            />
+                            <div className="mt-4 py-2">
+                                <TableWrap>
+                                    <AccountsByCategories
+                                        categories={historicalsCategories}
+                                        setShowAccountDetails={setShowAccountDetails}
+                                        showAccountDetails={showAccountDetails}
+                                        aria-label="Categories breakdown"
+                                    />
+                                </TableWrap>
+                            </div>
+                            {
+                                showAccountDetails.length !== 0 &&
+                                <div className="mt-4 py-2">
+                                    <TableWrap>
+                                        <SectionShowDetailsWrap
+                                            description={'Account Name: '}
+                                            label={`${showAccountDetails.name} (${nf.format(parseFloat(totalBalance))})`}
+                                            textButton={'see details'}
+                                        >
+                                            <table className="items-center w-full bg-transparent border-collapse overflow-y-auto">
+                                                <thead className="">
+                                                    <tr className="">
+                                                        <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">date</th>
+                                                        <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">description</th>
+                                                        <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Debits</th>
+                                                        <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Credits</th>
+                                                        <th className="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="">
+                                                    <TBodyAccountsHistoricalsShow
+                                                        data={data}
+                                                        showAccountDetails={showAccountDetails}
+                                                    />
+                                                </tbody>
+                                            </table>
+                                        </SectionShowDetailsWrap>
+                                    </TableWrap>
+                                </div>
+                            }
+                        </>
                     )}
-                    <AccountsByCategories 
-                        categories={historicalsCategories} 
-                        aria-label="Categories breakdown"
-                    />
                 </>
             )}
         </div>

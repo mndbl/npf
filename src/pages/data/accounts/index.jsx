@@ -101,7 +101,7 @@ export function AccountsIndex() {
     const { accounts } = useLoaderData()
 
     const data = useMemo(() => {
-        return accounts.filter(acc => parseFloat(acc.actual_balance) !== 0)
+        return accounts
     }, [accounts]
     )
 

@@ -62,7 +62,7 @@ export function SocialAndRecent({ categories, latestRegister }) {
     )
 }
 
-export const SubTable = ({ relatedAccounts }) => {
+export const SubTable = ({ relatedAccounts, setShowAccountDetails, showAccountDetails }) => {
     return (
         <table className=" mt-auto items-center bg-transparent border-collapse">
             <thead>
@@ -81,7 +81,7 @@ export const SubTable = ({ relatedAccounts }) => {
                         if (account.balanceAccount > 0.001 || account.balanceAccount < -0.001) {
                             return (
                                 <tr key={`account-${account.name}-data-by-categorie`}>
-                                    <td className="capitalize border-t-0 align-middle border-l-0 border-r-0 text-xs py-1 text-left">{account.name}</td>
+                                    <td  onClick={() => setShowAccountDetails(account)} className="cursor-pointer capitalize border-t-0 align-middle border-l-0 border-r-0 text-xs py-1 text-left">{account.name}</td>
                                     <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.init_deb_balance)}</td>
                                     <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{nf.format(account.init_cre_balance)}</td>
                                     <td className="border-t-0 px-1 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-1 text-right">{parseFloat(account.debit) != null ? nf.format(account.debits) : 0}</td>
