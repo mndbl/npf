@@ -17,11 +17,12 @@ const currentUser = async (currAccToken) => {
 const login = async (data) => {
     const userAuth = await axios.post(API_URL + '/login', data)
         .then((res) => {
+            console.log(data)
             localforage.setItem('userAuth', res.data)
             return res.data
         })
         .catch((err) => {
-            console.log(err);
+            console.log(err, data);
             data = (err && err.response && err.response.data)
             return data
         })
@@ -42,6 +43,29 @@ const register = async (data) => {
 }
 
 
+const sendPasswordResetLink = async (data) => {
+    const res = await axios.post(API_URL + '/password/forgot', data)
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            return (err && err.response && err.response.data)
+        })
+    return res
+}
+
+const resetPassword = async (data) => {
+    const res = await axios.post(API_URL + '/password/reset', data)
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            return (err && err.response && err.response.data)
+        })
+    return res
+}
+
+
 const logout = async (currAccToken) => {
     const userLogout = await axios.post(API_URL + '/logout',
         [], authHeader(currAccToken))
@@ -58,6 +82,8 @@ const logout = async (currAccToken) => {
 export const authService = {
     login,
     register,
+    sendPasswordResetLink,
+    resetPassword,
     logout,
     currentUser
 }

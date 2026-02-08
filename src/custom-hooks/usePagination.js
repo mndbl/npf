@@ -7,6 +7,35 @@ const range = (start, end) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
+// Persistir página en localStorage
+export const savePageToStorage = (tableId, page) => {
+  try {
+    localStorage.setItem(`pagination_page_${tableId}`, page.toString());
+  } catch (error) {
+    console.error('Error saving page to localStorage:', error);
+  }
+};
+
+// Obtener página guardada de localStorage
+export const getPageFromStorage = (tableId) => {
+  try {
+    const savedPage = localStorage.getItem(`pagination_page_${tableId}`);
+    return savedPage ? parseInt(savedPage, 10) : 1;
+  } catch (error) {
+    console.error('Error reading page from localStorage:', error);
+    return 1;
+  }
+};
+
+// Limpiar página guardada
+export const clearPageFromStorage = (tableId) => {
+  try {
+    localStorage.removeItem(`pagination_page_${tableId}`);
+  } catch (error) {
+    console.error('Error clearing page from localStorage:', error);
+  }
+};
+
 export const usePagination = ({
   totalCount,
   pageSize,

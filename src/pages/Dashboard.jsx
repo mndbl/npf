@@ -77,7 +77,7 @@ export function Dashboard() {
             <SocialAndRecent categories={categories} latestRegister={latestRegister} />
 
             {/* <!-- Task Summaries --> */}
-            <TaskSummaries />
+            {/* <TaskSummaries /> */}
             {/* <!-- ./Task Summaries --> */}
 
             {/* <!-- Client Table --> */}
@@ -85,7 +85,7 @@ export function Dashboard() {
             {/* <!-- ./Client Table --> */}
 
             {/* <!-- Contact Form --> */}
-            <div className="mt-8 mx-4">
+            {/* <div className="mt-8 mx-4">
                 <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="p-6 mr-2 bg-gray-100 dark:bg-gray-800 sm:rounded-lg">
                         <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">Get in touch</h1>
@@ -132,11 +132,11 @@ export function Dashboard() {
                         <button type="submit" className="md:w-32 bg-blue-600 dark:bg-gray-100 text-white dark:text-gray-800 font-bold py-3 px-6 rounded-lg mt-4 hover:bg-blue-500 dark:hover:bg-gray-200 transition ease-in-out duration-300">Submit</button>
                     </form>
                 </div>
-            </div>
+            </div> */}
             {/* <!-- ./Contact Form --> */}
 
             {/* <!-- External resources --> */}
-            <div className="mt-8 mx-4">
+            {/* <div className="mt-8 mx-4">
                 <div className="p-4 bg-blue-50 dark:bg-gray-800 dark:text-gray-50 border border-blue-500 dark:border-gray-500 rounded-lg shadow-md">
                     <h4 className="text-lg font-semibold">Have taken ideas & reused components from the following resources:</h4>
                     <ul>
@@ -178,7 +178,7 @@ export function Dashboard() {
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> */}
             {/* <!-- ./External resources --> */}
         </>
     )

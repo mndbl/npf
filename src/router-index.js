@@ -3,6 +3,8 @@ import { LandingPage } from "./pages/LandingPage";
 import { Dashboard, loader as dashboardLoader } from "./pages/Dashboard";
 import { LandingWrap, loader as landingLoader } from "./components/wraps/LandingWrap";
 import { Login, action as loginAction, loader as loginLoader } from "./pages/auth/Login";
+import { ForgotPassword, action as forgotAction } from "./pages/auth/ForgotPassword";
+import { ResetPassword, action as resetAction, loader as resetLoader } from "./pages/auth/ResetPassword";
 import { Register, action as registerAction, loader as registerLoader } from "./pages/auth/Register";
 import { Logout, action as logoutAction } from "./pages/auth/Logout";
 import { AdminPage, loader as adminLoader } from "./pages/AdminPage";
@@ -45,6 +47,17 @@ export const router = createBrowserRouter([
                 element: <Login />,
                 action: loginAction,
                 loader: loginLoader
+            },
+            {
+                path: 'forgot-password',
+                element: <ForgotPassword />,
+                action: forgotAction
+            },
+            {
+                path: 'reset-password',
+                element: <ResetPassword />,
+                loader: resetLoader,
+                action: resetAction
             },
             {
                 path: 'register',

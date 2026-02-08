@@ -1,5 +1,5 @@
 import { SidebarItems } from "./SidebarItems"
-import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon, HomeIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
+import { ChartBarSquareIcon, ArchiveBoxIcon, UserCircleIcon, WalletIcon, ViewColumnsIcon, ClockIcon, HomeIcon, CalendarDaysIcon, BookOpenIcon } from "@heroicons/react/24/solid";
 
 const itemsSidebar = [
     {
@@ -68,6 +68,18 @@ const itemsSidebar = [
                 path: '/admin/consults/by-periods',
                 icon: <CalendarDaysIcon className="w-5 h-5" />
             },
+        ]
+    },
+    {
+        title: 'help & docs',
+        icon: false,
+        subItems: [
+            {
+                title: 'tutorial',
+                path: '/tutorial.html',
+                icon: <BookOpenIcon className="w-5 h-5" />,
+                external: true
+            }
         ]
     }
 ]

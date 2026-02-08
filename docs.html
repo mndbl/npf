@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPF - Documentación Completa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --bg-light: #ffffff;
+            --bg-dark: #1f2937;
+            --text-light: #1f2937;
+            --text-dark: #f3f4f6;
+            --border: #e5e7eb;
+            --border-dark: #374151;
+            --code-bg: #f3f4f6;
+            --code-bg-dark: #111827;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-light);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            transition: all 0.3s;
+        }
+
+        body.dark .sidebar {
+            background: #111827;
+            border-color: var(--border-dark);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .sidebar h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark .sidebar h3 {
+            color: var(--text-dark);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 12px;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        body.dark .sidebar a {
+            color: var(--text-dark);
+        }
+
+        .sidebar a:hover {
+            background: var(--primary);
+            color: white;
+            padding-left: 16px;
+        }
+
+        .sidebar a.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                max-height: 300px;
+                overflow: visible;
+            }
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 900px;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+
+        /* HEADER */
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        body.dark .doc-header {
+            border-color: var(--border-dark);
+        }
+
+        .toggle-theme {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .toggle-theme:hover {
+            background: var(--primary-dark);
+        }
+
+        /* TYPOGRAPHY */
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        body.dark h2 {
+            border-color: var(--border-dark);
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        body.dark h3 {
+            color: var(--text-dark);
+        }
+
+        h4 {
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* CODE */
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        body.dark code {
+            background: var(--code-bg-dark);
+            color: #60a5fa;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        body.dark pre {
+            background: var(--code-bg-dark);
+            color: #e5e7eb;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* LISTS */
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        body.dark table {
+            border-color: var(--border-dark);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        body.dark td {
+            border-color: var(--border-dark);
+        }
+
+        tr:hover {
+            background: var(--code-bg);
+        }
+
+        body.dark tr:hover {
+            background: var(--code-bg-dark);
+        }
+
+        /* BLOCKQUOTE */
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body.dark blockquote {
+            color: #999;
+        }
+
+        /* LINKS */
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        a:hover {
+            border-bottom-color: var(--primary);
+        }
+
+        /* SECTIONS */
+        .doc-section {
+            margin-bottom: 60px;
+        }
+
+        .doc-section:first-of-type {
+            margin-top: 0;
+        }
+
+        /* SEARCH */
+        .search-box {
+            position: sticky;
+            top: 0;
+            background: var(--bg-light);
+            padding: 15px 0;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        body.dark .search-box {
+            background: var(--bg-dark);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        body.dark .search-box input {
+            background: #1f2937;
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        /* HIGHLIGHTS */
+        .highlight {
+            background: #fffacd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        body.dark .highlight {
+            background: #3b3000;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        body.dark .footer {
+            border-color: var(--border-dark);
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        body.dark ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        body.dark ::-webkit-scrollbar-thumb {
+            background: var(--border-dark);
+        }
+
+        .table-of-contents {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        body.dark .table-of-contents {
+            background: var(--code-bg-dark);
+        }
+
+        .table-of-contents ul {
+            margin-left: 20px;
+        }
+
+        .table-of-contents a {
+            color: var(--primary);
+        }
+
+        /* EXTERNAL LINKS STYLING */
+        .external-link::after {
+            content: ' ↗';
+            font-size: 10px;
+        }
+
+        .quick-access {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .quick-access-card {
+            background: var(--code-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        body.dark .quick-access-card {
+            background: var(--code-bg-dark);
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .quick-access-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .quick-access-card strong {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .quick-access-card small {
+            opacity: 0.7;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .quick-access {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">💰 NPF Docs</div>
+            
+            <h3>📚 Documentación</h3>
+            <ul>
+                <li><a href="#inicio" class="nav-link active" data-section="inicio">🏠 Inicio</a></li>
+                <li><a href="#accesos" class="nav-link" data-section="accesos">🔗 Accesos Rápidos</a></li>
+                <li><a href="#quick-start" class="nav-link" data-section="quick-start">⚡ Quick Start</a></li>
+                <li><a href="#estructura" class="nav-link" data-section="estructura">📁 Estructura</a></li>
+            </ul>
+
+            <h3>🚀 Tutorial</h3>
+            <ul>
+                <li><a href="#tutorial" class="nav-link" data-section="tutorial">📖 Para Principiantes</a></li>
+                <li><a href="#primeros-pasos" class="nav-link" data-section="primeros-pasos">👶 Primeros Pasos</a></li>
+            </ul>
+
+            <h3>🛠️ Desarrollo</h3>
+            <ul>
+                <li><a href="#componentes" class="nav-link" data-section="componentes">🔘 Componentes</a></li>
+                <li><a href="#servicios" class="nav-link" data-section="servicios">🔌 Servicios</a></li>
+                <li><a href="#rutas" class="nav-link" data-section="rutas">🧭 Rutas</a></li>
+            </ul>
+
+            <h3>📚 Referencias</h3>
+            <ul>
+                <li><a href="#arquitectura" class="nav-link" data-section="arquitectura">🏗️ Arquitectura</a></li>
+                <li><a href="#tailwind" class="nav-link" data-section="tailwind">🎨 Tailwind CSS</a></li>
+                <li><a href="#problemas" class="nav-link" data-section="problemas">❓ Problemas</a></li>
+            </ul>
+
+            <h3>📖 Archivos Markdown</h3>
+            <ul>
+                <li><a href="README.md" target="_blank" class="external-link">📄 README</a></li>
+                <li><a href="GUIA_COMPLETA.md" target="_blank" class="external-link">📘 Guía Completa</a></li>
+                <li><a href="TUTORIAL_RAPIDO.md" target="_blank" class="external-link">⚡ Tutorial Rápido</a></li>
+                <li><a href="ARQUITECTURA.md" target="_blank" class="external-link">🏗️ Arquitectura</a></li>
+                <li><a href="REFERENCIA_COMPONENTES.md" target="_blank" class="external-link">📖 Componentes</a></li>
+                <li><a href="TROUBLESHOOTING.md" target="_blank" class="external-link">❓ Troubleshooting</a></li>
+                <li><a href="INDICE.md" target="_blank" class="external-link">📋 Índice</a></li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <div class="doc-header">
+                <h1>📚 NPF - Documentación Completa</h1>
+                <button class="toggle-theme" onclick="toggleTheme()">🌙 Oscuro</button>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar en documentación..." onkeyup="searchContent()">
+            </div>
+
+            <!-- INICIO -->
+            <div id="inicio" class="doc-section">
+                <h2>🚀 Bienvenido a NPF</h2>
+                <p><strong>NPF</strong> es una aplicación web de gestión financiera personal construida con React. Permite gestionar tus cuentas, transacciones, categorías y visualizar reportes.</p>
+                
+                <div class="table-of-contents">
+                    <h4>📋 Contenido Principal:</h4>
+                    <ul>
+                        <li>Gestión de cuentas bancarias y monederos</li>
+                        <li>Categorización de transacciones</li>
+                        <li>Reportes y gráficos</li>
+                        <li>Autenticación de usuarios</li>
+                        <li>Tema claro/oscuro</li>
+                    </ul>
+                </div>
+
+                <h3>🛠️ Tecnologías</h3>
+                <ul>
+                    <li><strong>React 18.2</strong> - Librería UI</li>
+                    <li><strong>React Router 6</strong> - Navegación</li>
+                    <li><strong>Tailwind CSS 3</strong> - Estilos</li>
+                    <li><strong>Axios</strong> - Cliente HTTP</li>
+                    <li><strong>LocalForage</strong> - Almacenamiento local</li>
+                </ul>
+            </div>
+
+            <!-- ACCESOS RÁPIDOS -->
+            <div id="accesos" class="doc-section">
+                <h2>🔗 Accesos Rápidos a Documentación</h2>
+                <p>Haz clic en cualquiera de los siguientes documentos para explorar la documentación en detalle:</p>
+                
+                <div class="quick-access">
+                    <a href="GUIA_COMPLETA.md" target="_blank" class="quick-access-card">
+                        <strong>📘 Guía Completa</strong>
+                        <small>Documentación principal con todos los detalles</small>
+                        <small>⏱️ 2-3 horas</small>
+                    </a>
+                    
+                    <a href="TUTORIAL_RAPIDO.md" target="_blank" class="quick-access-card">
+                        <strong>⚡ Tutorial Rápido</strong>
+                        <small>Aprende en 30 minutos con ejemplos prácticos</small>
+                        <small>⏱️ 30 minutos</small>
+                    </a>
+                    
+                    <a href="ARQUITECTURA.md" target="_blank" class="quick-access-card">
+                        <strong>🏗️ Arquitectura</strong>
+                        <small>Estructura técnica y patrones de diseño</small>
+                        <small>⏱️ 1-2 horas</small>
+                    </a>
+                    
+                    <a href="REFERENCIA_COMPONENTES.md" target="_blank" class="quick-access-card">
+                        <strong>📖 Componentes</strong>
+                        <small>Catálogo y referencia de componentes</small>
+                        <small>⏱️ Consulta</small>
+                    </a>
+                    
+                    <a href="TROUBLESHOOTING.md" target="_blank" class="quick-access-card">
+                        <strong>❓ Troubleshooting</strong>
+                        <small>Soluciones a problemas comunes</small>
+                        <small>⏱️ Según sea</small>
+                    </a>
+                    
+                    <a href="INDICE.md" target="_blank" class="quick-access-card">
+                        <strong>📋 Índice Completo</strong>
+                        <small>Mapa y guía de navegación</small>
+                        <small>⏱️ 5 minutos</small>
+                    </a>
+                </div>
+
+                <h3>✨ ¿Por dónde empezar?</h3>
+                <ul>
+                    <li><strong>Principiantes:</strong> Comienza con <a href="TUTORIAL_RAPIDO.md" target="_blank">Tutorial Rápido</a> (30 min)</li>
+                    <li><strong>Desarrolladores:</strong> Lee <a href="ARQUITECTURA.md" target="_blank">Arquitectura</a> primero</li>
+                    <li><strong>Referencia:</strong> Consulta los <a href="REFERENCIA_COMPONENTES.md" target="_blank">Componentes</a></li>
+                    <li><strong>Problemas:</strong> Busca en <a href="TROUBLESHOOTING.md" target="_blank">Troubleshooting</a></li>
+                </ul>
+            </div>
+
+            <!-- QUICK START -->
+            <div id="quick-start" class="doc-section">
+                <h2>⚡ Quick Start (Inicio Rápido)</h2>
+                
+                <h3>1️⃣ Instalar Dependencias</h3>
+                <pre><code>npm install</code></pre>
+
+                <h3>2️⃣ Iniciar Desarrollo</h3>
+                <pre><code>npm start</code></pre>
+
+                <p>Se abrirá automáticamente en <code>http://localhost:3000</code></p>
+
+                <h3>3️⃣ Compilar para Producción</h3>
+                <pre><code>npm run build</code></pre>
+
+                <h3>📋 Comandos Disponibles</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>npm start</code></td>
+                            <td>Inicia servidor de desarrollo</td>
+                        </tr>
+                        <tr>
+                            <td><code>npm run build</code></td>
+                            <td>Compila para producción</td>
+                        </tr>
+                        <tr>
+                            <td><code>npm test</code></td>
+                            <td>Ejecuta tests</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ESTRUCTURA -->
+            <div id="estructura" class="doc-section">
+                <h2>📁 Estructura del Proyecto</h2>
+                <pre><code>npf/
+├── src/
+│   ├── components/       # Componentes reutilizables
+│   │   ├── buttons/      # Botones
+│   │   ├── forms/        # Formularios
+│   │   ├── inputs/       # Campos
+│   │   ├── tables/       # Tablas
+│   │   ├── navs/         # Navegación
+│   │   ├── sections/     # Secciones
+│   │   └── wraps/        # Layouts
+│   ├── pages/            # Páginas/Vistas
+│   │   ├── auth/         # Autenticación
+│   │   └── data/         # Gestión de datos
+│   ├── services/         # Servicios (API)
+│   ├── config/           # Configuración
+│   ├── custom-hooks/     # Hooks personalizados
+│   └── App.js            # Raíz
+├── public/               # Archivos estáticos
+└── package.json          # Dependencias</code></pre>
+            </div>
+
+            <!-- TUTORIAL -->
+            <div id="tutorial" class="doc-section">
+                <h2>🚀 Tutorial para Principiantes</h2>
+                
+                <h3>Paso 1: Entender el Proyecto</h3>
+                <p>NPF es una app de finanzas personales. Permite:</p>
+                <ul>
+                    <li>Registrarse y autenticarse</li>
+                    <li>Crear cuentas bancarias</li>
+                    <li>Registrar movimientos</li>
+                    <li>Ver reportes</li>
+                </ul>
+
+                <h3>Paso 2: Instalación</h3>
+                <pre><code># 1. Navega al proyecto
+cd C:\laragon\www\npf
+
+# 2. Instala dependencias
+npm install
+
+# 3. Inicia desarrollo
+npm start</code></pre>
+
+                <h3>Paso 3: Hacer tu Primer Cambio</h3>
+                <p>Abre <code>src/components/buttons/Button.jsx</code> y cambia:</p>
+                <pre><code>// De:
+className={`px-4 py-2 rounded bg-blue-500 text-white ${className}`}
+
+// A:
+className={`px-4 py-2 rounded bg-green-500 text-white ${className}`}</code></pre>
+
+                <p>¡Los botones cambiarán a verde automáticamente!</p>
+
+                <h3>Paso 4: Crear un Componente</h3>
+                <p>Crea archivo: <code>src/components/cards/MyCard.jsx</code></p>
+                <pre><code>export function MyCard({ title, value }) {
+  return (
+    &lt;div className="p-4 rounded-lg bg-white shadow-md"&gt;
+      &lt;h3 className="text-lg font-bold"&gt;{title}&lt;/h3&gt;
+      &lt;p className="text-2xl font-bold text-green-600"&gt;${value}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <p>Úsalo en una página importando: <code>import { MyCard } from '../components/cards/MyCard';</code></p>
+            </div>
+
+            <!-- PRIMEROS PASOS -->
+            <div id="primeros-pasos" class="doc-section">
+                <h2>👶 Primeros Pasos de Usuario</h2>
+                
+                <h3>Registro e Login</h3>
+                <ol>
+                    <li>Ve a <code>http://localhost:3000</code></li>
+                    <li>Haz clic en <strong>"Registrarse"</strong></li>
+                    <li>Completa el formulario</li>
+                    <li>Se guardará tu sesión automáticamente</li>
+                </ol>
+
+                <h3>Crear tu Primera Cuenta</h3>
+                <ol>
+                    <li>Navega a <strong>"Cuentas"</strong> en el menú</li>
+                    <li>Haz clic en <strong>"+"</strong></li>
+                    <li>Llena el formulario (nombre, categoría, saldo inicial)</li>
+                    <li>Haz clic en <strong>"Guardar"</strong></li>
+                </ol>
+
+                <h3>Registrar tu Primer Movimiento</h3>
+                <ol>
+                    <li>Navega a <strong>"Registros"</strong></li>
+                    <li>Haz clic en <strong>"+ Agregar"</strong></li>
+                    <li>Selecciona origen y destino</li>
+                    <li>Ingresa monto y descripción</li>
+                    <li>Haz clic en <strong>"Guardar"</strong></li>
+                </ol>
+            </div>
+
+            <!-- COMPONENTES -->
+            <div id="componentes" class="doc-section">
+                <h2>🔘 Componentes Principales</h2>
+                
+                <h3>Botones</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Uso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>&lt;Button /&gt;</code></td>
+                            <td>Botón genérico</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;AddButton /&gt;</code></td>
+                            <td>Agregar elemento</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;SubmitButton /&gt;</code></td>
+                            <td>Enviar formulario</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;LogoutButton /&gt;</code></td>
+                            <td>Cerrar sesión</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Inputs</h3>
+                <ul>
+                    <li><code>&lt;InputGroup /&gt;</code> - Campo de entrada estándar</li>
+                    <li><code>&lt;Select /&gt;</code> - Desplegable</li>
+                    <li><code>&lt;TextArea /&gt;</code> - Área de texto</li>
+                    <li><code>&lt;SearchBar /&gt;</code> - Barra de búsqueda</li>
+                    <li><code>&lt;FileInputGroup /&gt;</code> - Carga de archivos</li>
+                </ul>
+
+                <h3>Tablas</h3>
+                <ul>
+                    <li><code>&lt;Table /&gt;</code> - Tabla principal</li>
+                    <li><code>&lt;Pagination /&gt;</code> - Paginación</li>
+                    <li><code>&lt;RowOptions /&gt;</code> - Opciones de fila</li>
+                </ul>
+
+                <h3>Navegación</h3>
+                <ul>
+                    <li><code>&lt;Sidebar /&gt;</code> - Barra lateral</li>
+                    <li><code>&lt;Header /&gt;</code> - Encabezado</li>
+                    <li><code>&lt;Footer /&gt;</code> - Pie de página</li>
+                </ul>
+            </div>
+
+            <!-- SERVICIOS -->
+            <div id="servicios" class="doc-section">
+                <h2>🔌 Servicios API</h2>
+                
+                <h3>auth-services.js</h3>
+                <p>Maneja autenticación:</p>
+                <pre><code>import { authService } from '../services/auth-services';
+
+// Login
+const resultado = await authService.login(email, password);
+
+// Registro
+const nuevoUsuario = await authService.register(datos);
+
+// Logout
+await authService.logout();</code></pre>
+
+                <h3>data-services.js</h3>
+                <p>Gestiona operaciones CRUD:</p>
+                <pre><code>import { dataService } from '../services/data-services';
+
+// Obtener
+const datos = await dataService.getData(url, id, filters, token);
+
+// Crear
+const nuevo = await dataService.createData(url, datos, token);
+
+// Actualizar
+const actualizado = await dataService.updateData(url, id, datos, token);
+
+// Eliminar
+await dataService.deleteData(url, id, token);</code></pre>
+            </div>
+
+            <!-- RUTAS -->
+            <div id="rutas" class="doc-section">
+                <h2>🧭 Sistema de Rutas</h2>
+                
+                <h3>Rutas Públicas</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ruta</th>
+                            <th>Componente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/</code></td>
+                            <td>LandingPage</td>
+                        </tr>
+                        <tr>
+                            <td><code>/login</code></td>
+                            <td>Login</td>
+                        </tr>
+                        <tr>
+                            <td><code>/register</code></td>
+                            <td>Register</td>
+                        </tr>
+                        <tr>
+                            <td><code>/forgot-password</code></td>
+                            <td>ForgotPassword</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Rutas Protegidas (requieren login)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ruta</th>
+                            <th>Descrip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/admin</code></td>
+                            <td>Dashboard</td>
+                        </tr>
+                        <tr>
+                            <td><code>/admin/accounts</code></td>
+                            <td>Gestión de cuentas</td>
+                        </tr>
+                        <tr>
+                            <td><code>/admin/categories-accounts</code></td>
+                            <td>Categorías</td>
+                        </tr>
+                        <tr>
+                            <td><code>/admin/registers</code></td>
+                            <td>Transacciones</td>
+                        </tr>
+                        <tr>
+                            <td><code>/admin/consults</code></td>
+                            <td>Reportes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ARQUITECTURA -->
+            <div id="arquitectura" class="doc-section">
+                <h2>🏗️ Arquitectura de la Aplicación</h2>
+                
+                <h3>Capas</h3>
+                <pre><code>┌────────────────────────────────────┐
+│   Presentación (React Components)  │
+├────────────────────────────────────┤
+│   Lógica de Negocios (Servicios)   │
+├────────────────────────────────────┤
+│   Comunicación (Axios + HTTP)      │
+├────────────────────────────────────┤
+│   API Backend (REST)               │
+└────────────────────────────────────┘</code></pre>
+
+                <h3>Flujo de Autenticación</h3>
+                <ol>
+                    <li>Usuario ingresa credenciales</li>
+                    <li>Se envía POST a <code>/login</code></li>
+                    <li>API devuelve token JWT</li>
+                    <li>Se guarda en <code>localStorage</code> con <code>localforage</code></li>
+                    <li>Se envía en header de peticiones: <code>Authorization: Bearer token</code></li>
+                </ol>
+
+                <h3>Patrones de Diseño</h3>
+                <ul>
+                    <li><strong>Service Pattern</strong> - Servicios centralizados para lógica</li>
+                    <li><strong>Component Composition</strong> - Componentes reutilizables</li>
+                    <li><strong>Custom Hooks</strong> - Lógica reutilizable (usePagination)</li>
+                    <li><strong>Layout/Wrapper</strong> - Componentes contenedores</li>
+                </ul>
+            </div>
+
+            <!-- TAILWIND CSS -->
+            <div id="tailwind" class="doc-section">
+                <h2>🎨 Tailwind CSS</h2>
+                
+                <h3>Clases Comunes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clase</th>
+                            <th>Efecto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>p-4</code></td>
+                            <td>Padding 1rem</td>
+                        </tr>
+                        <tr>
+                            <td><code>m-2</code></td>
+                            <td>Margin 0.5rem</td>
+                        </tr>
+                        <tr>
+                            <td><code>text-blue-500</code></td>
+                            <td>Texto azul</td>
+                        </tr>
+                        <tr>
+                            <td><code>bg-red-500</code></td>
+                            <td>Fondo rojo</td>
+                        </tr>
+                        <tr>
+                            <td><code>rounded-lg</code></td>
+                            <td>Esquinas redondeadas</td>
+                        </tr>
+                        <tr>
+                            <td><code>hover:bg-blue-600</code></td>
+                            <td>Color al pasar cursor</td>
+                        </tr>
+                        <tr>
+                            <td><code>dark:bg-gray-800</code></td>
+                            <td>Tema oscuro</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Ejemplo Completo</h3>
+                <pre><code>&lt;div className="grid grid-cols-3 gap-4 p-4"&gt;
+  &lt;div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition"&gt;
+    &lt;h3 className="text-lg font-bold text-blue-600"&gt;Título&lt;/h3&gt;
+    &lt;p className="text-gray-600 dark:text-gray-300 mt-2"&gt;Descripción&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <!-- PROBLEMAS -->
+            <div id="problemas" class="doc-section">
+                <h2>❓ Problemas Comunes</h2>
+                
+                <h3>❌ "npm: command not found"</h3>
+                <p><strong>Solución:</strong> Instala Node.js desde <a href="https://nodejs.org" target="_blank">nodejs.org</a></p>
+
+                <h3>❌ "Port 3000 already in use"</h3>
+                <p><strong>Solución:</strong> Ejecuta en otro puerto:</p>
+                <pre><code>npm start -- --port 3001</code></pre>
+
+                <h3>❌ Los estilos no se aplican</h3>
+                <p><strong>Solución:</strong> Reinicia el servidor:</p>
+                <pre><code>npm start</code></pre>
+
+                <h3>❌ "Cannot find module"</h3>
+                <p><strong>Solución:</strong> Reinstala dependencias:</p>
+                <pre><code>npm install</code></pre>
+
+                <h3>❌ API no responde</h3>
+                <p><strong>Solución:</strong> Verifica:</p>
+                <ul>
+                    <li>URL correcta en <code>src/config/main.config.js</code></li>
+                    <li>Backend esté ejecutándose</li>
+                    <li>No haya problemas CORS</li>
+                </ul>
+
+                <h3>❌ No puedo hacer login</h3>
+                <p><strong>Causa posible:</strong> Credenciales incorrectas o backend no responde</p>
+                <p><strong>Solución:</strong> Verifica token en DevTools (F12) → Application → LocalStorage</p>
+
+                <h3>✅ Si nada funciona</h3>
+                <pre><code># 1. Borra node_modules
+rm -r node_modules
+
+# 2. Reinstala
+npm install
+
+# 3. Reinicia
+npm start</code></pre>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>💰 NPF - Gestor de Finanzas Personales</p>
+                <p>Documentación v1.0 | Febrero 2026</p>
+                <p>desarrollada con ❤️ para ayudarte a aprender React</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.querySelector('.toggle-theme').textContent = isDark ? '☀️ Claro' : '🌙 Oscuro';
+        }
+
+        // Load saved theme
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark');
+                document.querySelector('.toggle-theme').textContent = '☀️ Claro';
+            }
+        });
+
+        // Search functionality
+        function searchContent() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.doc-section');
+            
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                section.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

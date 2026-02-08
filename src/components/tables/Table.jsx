@@ -4,12 +4,13 @@ import { Pagination } from "./Pagination.jsx"
 import { TRow } from "./TRow.jsx";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/solid";
 import { SearchBar } from "../inputs/SearchBar.jsx";
+import { getPageFromStorage } from "../../custom-hooks/usePagination";
 
 
 
 export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
     const [pageSize, setPageSize] = useState(10)
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => getPageFromStorage(captionTable));
     const [sortBy, setSortBy] = useState('')  // column name to sort
     const [isAscending, setIsAscending] = useState(true)
 
@@ -75,7 +76,9 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
                 <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                     {
                         currentTableData.map(
-                            (tRow) => <TRow tRow={tRow} tableHeads={tableHeads} key={`tr-table-${tRow.id}`} />
+                            (tRow) => {
+                                return <TRow tRow={tRow} tableHeads={tableHeads} key={`tr-table-${tRow.id}`} />
+                            }
                         )
                     }
 
@@ -87,6 +90,7 @@ export function Table({ captionTable = 'Table', tableHeads = [], data = [] }) {
                 pageSize={pageSize}
                 onPageChange={page => setCurrentPage(page)}
                 setPageSize={setPageSize}
+                tableId={captionTable}
             />
         </TableWrap>
     )

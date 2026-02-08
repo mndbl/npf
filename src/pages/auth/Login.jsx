@@ -51,6 +51,7 @@ export function Login() {
                     placeholder={'Password'}
                     name={'user-password'}
                 />
+                <p className="text-xs text-right mb-3"><a href="/forgot-password" className="text-blue-500 hover:underline">Forgot your password?</a></p>
                 <GroupButton />
             </Form>
         </AuthFormsWrap>

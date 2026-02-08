@@ -12,13 +12,12 @@ export default function TBodyAccountsHistoricalsShow({ data, showAccountDetails 
         setTotalBalance(balance)
     }, [balance])
     return (
-        <tbody>
+        <>
             {
                 filteredData.map((register, index) => {
                     const registerData = register.register_details.find(
                         det => det.account_id === showAccountDetails.id
                     );
-                    console.log(registerData);
                     return (
                         <tr key={`account-regiter-detail-${register.id}`}
                             className="text-gray-700 dark:text-gray-100 hover:bg-gray-600">
@@ -37,6 +36,6 @@ export default function TBodyAccountsHistoricalsShow({ data, showAccountDetails 
                     )
                 })
             }
-        </tbody>
+        </>
     )
 }

@@ -49,10 +49,30 @@ export function Historicals() {
     const q = searchParams.get('q') || '';
     const [showAccountDetails, setShowAccountDetails] = useState([])
     const [totalBalance, setTotalBalance] = useState(0)
-    let balance = 0
+    
     useEffect(() => {
-        setTotalBalance(balance)
-    }, [balance])
+        // Calculate balance when showAccountDetails changes
+        if (showAccountDetails.length !== 0) {
+            const filteredData = historicals.filter(register =>
+                register.register_details.some(det => det.account_id === showAccountDetails.id)
+            )
+            
+            let balance = 0
+            filteredData.forEach((register, index) => {
+                const registerData = register.register_details.find(
+                    det => det.account_id === showAccountDetails.id
+                );
+                
+                if (index === 0) {
+                    balance = parseFloat(showAccountDetails.init_deb_balance) - parseFloat(showAccountDetails.init_cre_balance) + parseFloat(registerData.amount_deb) - parseFloat(registerData.amount_cre)
+                } else {
+                    balance += registerData.amount_deb - registerData.amount_cre
+                }
+            })
+            
+            setTotalBalance(balance)
+        }
+    }, [showAccountDetails, historicals])
     // Add loading and error states
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
