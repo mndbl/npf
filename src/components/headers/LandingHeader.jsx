@@ -6,22 +6,17 @@ import { LogoutButton } from "../buttons/LogoutButton";
 const menuItems = [
     {
         path: '/',
-        name: 'Home',
+        name: 'Inicio',
         isAdmyn: false
     },
     {
         path: '/about',
-        name: 'About',
+        name: 'Características',
         isAdmyn: false
     },
     {
         path: '/contact',
-        name: 'Contact',
-        isAdmyn: false
-    },
-    {
-        path: '/blog',
-        name: 'Blog',
+        name: 'Contacto',
         isAdmyn: false
     },
     {
@@ -29,15 +24,14 @@ const menuItems = [
         name: 'Admin',
         isAdmyn: true
     },
-
 ]
 
 
 
 export function LandingHeader({ userAuth }) {
     const [isOpen, setIsOpen] = useState(false)
-    const activeLink = "flex hover:text-gray-600 cursor-pointer transition-colors duration-300 font-semibold text-blue-600"
-    const inactiveLink = "flex text-gray-600 hover:text-blue-500 cursor-pointer transition-colors duration-300"
+    const activeLink = "flex hover:text-gray-600 cursor-pointer transition-colors duration-300 font-semibold text-green-600"
+    const inactiveLink = "flex text-gray-600 hover:text-green-500 cursor-pointer transition-colors duration-300"
 
     const LinksMenu = () => {
         return (
@@ -77,12 +71,8 @@ export function LandingHeader({ userAuth }) {
                 <div className="flex items-center">
                     {/* Logo */}
                     <Link to={'/'} className="cursor-pointer">
-                        <h3 className="text-2xl font-medium text-blue-500">
-                            <img
-                                className="h-10"
-                                src="https://stackoverflow.design/assets/img/logos/so/logo-stackoverflow.svg"
-                                alt="Store Logo"
-                            />
+                        <h3 className="text-2xl font-bold text-green-600 flex items-center gap-2">
+                            💰 WIMM
                         </h3>
                     </Link>
                 </div>

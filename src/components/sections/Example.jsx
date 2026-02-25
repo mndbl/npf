@@ -1,72 +1,81 @@
 export function Example(params) {
     return (
-        <section id="example" className="p-20 space-y-8">
-            <h1 className="text-4xl text-center my-20">Tempor sit labore nostrud</h1>
-            <p>
-                Exercitation non Lorem exercitation tempor amet ad esse velit. Anim
-                deserunt id nulla quis ex magna culpa exercitation. Mollit consequat
-                enim eiusmod cupidatat commodo eiusmod nulla. Id quis amet incididunt
-                cillum dolore consectetur nulla incididunt laborum excepteur consectetur
-                consectetur sunt tempor. Minim fugiat sint sunt ad elit laboris est sit
-                est laboris labore do velit. Cillum aliquip pariatur deserunt eiusmod.
-                Consequat irure nulla adipisicing deserunt culpa. Veniam enim deserunt
-                sint consequat labore. Enim ullamco ea aute duis et nostrud voluptate
-                fugiat consectetur et velit cillum anim dolore. In exercitation proident
-                proident nostrud voluptate. Fugiat elit esse labore pariatur ex. Ex
-                labore esse voluptate nisi in. Ad anim deserunt reprehenderit est.
-                Aliquip pariatur nulla dolor amet quis aliqua sit nisi officia enim
-                velit. Ad enim eu dolor quis ipsum. Nulla amet consectetur adipisicing
-                ullamco qui tempor dolor excepteur dolore anim pariatur quis laboris
-                consequat. Consectetur ullamco consectetur minim eiusmod quis veniam
-                esse consectetur anim nostrud est pariatur laborum. Mollit tempor minim
-                amet esse. Lorem officia consequat eiusmod sunt. Proident occaecat velit
-                et consequat irure est cupidatat tempor ullamco. Aliquip est pariatur ea
-                ut qui ad sit dolor laboris adipisicing officia eiusmod sit. Proident
-                Lorem ex cillum sint cupidatat amet nulla veniam laborum velit pariatur.
-                Fugiat excepteur culpa sunt est anim sunt. Ea voluptate non do proident
-                sunt ad cillum enim esse.
-            </p>
-            <p>
-                Incididunt eu pariatur laborum reprehenderit duis ex cillum fugiat.
-                Occaecat tempor commodo officia esse reprehenderit commodo. Irure nisi
-                culpa anim velit esse do esse veniam dolore fugiat. Non anim elit ad ad
-                esse veniam dolore labore consectetur nulla dolor occaecat quis tempor.
-                Ad do exercitation cillum duis consequat. Ea anim aute elit velit duis
-                quis. Anim sint ut occaecat officia id exercitation ea incididunt
-                exercitation sint ex. Reprehenderit ut qui eiusmod cupidatat incididunt
-                ad reprehenderit culpa tempor quis. Elit eu dolor anim tempor eu fugiat
-                voluptate dolor aliqua sint ex proident ullamco. Labore deserunt velit
-                quis cupidatat aliquip elit do labore ut. Laborum dolore incididunt
-                officia esse reprehenderit pariatur ullamco consectetur tempor officia.
-                Dolor culpa irure enim aute ex non veniam eiusmod ipsum elit est sit
-                mollit dolor. Est ad anim pariatur consequat ad sit nisi.
-            </p>
-            <p>
-                Ipsum ea ad fugiat incididunt ea sit laborum cupidatat in ullamco
-                ullamco fugiat et id. Sit commodo enim enim veniam do. Ad id ad tempor
-                deserunt cupidatat reprehenderit ullamco officia excepteur culpa.
-                Officia amet in do voluptate exercitation pariatur officia et sit.
-                Adipisicing deserunt do aliquip ad id elit sint voluptate sit anim nulla
-                pariatur dolore. Lorem do commodo aute veniam deserunt magna commodo
-                cillum magna veniam. Ea amet nostrud commodo nisi adipisicing cillum
-                commodo. Nostrud aliquip cupidatat veniam culpa aute officia commodo
-                velit. Laborum quis aute nulla amet officia esse proident sunt irure
-                dolor fugiat incididunt occaecat. Commodo esse eiusmod fugiat eu enim
-                nisi sit id ut adipisicing. Enim nisi mollit ea aliqua nisi qui ullamco
-                eu velit et ullamco. Magna eiusmod eiusmod culpa proident minim laboris
-                fugiat enim laborum quis mollit minim do nisi. Elit irure incididunt
-                duis ullamco exercitation nulla fugiat. Eu ullamco aliquip aute
-                consectetur excepteur consequat. Non nostrud officia sint enim et ad
-                sunt amet pariatur deserunt enim reprehenderit. Aute Lorem adipisicing
-                laborum labore labore tempor officia officia reprehenderit incididunt
-                enim officia laborum. Proident eu irure occaecat ipsum elit elit anim eu
-                aute commodo ullamco reprehenderit incididunt elit. Mollit voluptate
-                eiusmod ullamco fugiat ex enim in fugiat et consectetur duis do. Et
-                aliqua ad labore labore ea ipsum nostrud veniam et reprehenderit. Sint
-                ad sit voluptate consequat cillum do fugiat Lorem. Pariatur ad ad
-                reprehenderit cupidatat nulla ipsum voluptate. Dolore pariatur ea
-                laboris est excepteur.
-            </p>
+        <section id="features" className="py-20 px-4 bg-slate-50">
+            <div className="max-w-6xl mx-auto">
+                <h1 className="text-4xl font-bold text-center mb-4 text-slate-900">
+                    Características de WIMM
+                </h1>
+                <p className="text-center text-slate-600 mb-16 text-lg">
+                    Todo lo que necesitas para entender y controlar tu dinero
+                </p>
+                
+                {/* Features Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Feature 1 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">💰</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Registro de Gastos</h3>
+                        <p className="text-slate-600">
+                            Registra todos tus gastos de forma rápida y sencilla. Categoriza automáticamente tu dinero.
+                        </p>
+                    </div>
+                    
+                    {/* Feature 2 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">📊</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Análisis Visuales</h3>
+                        <p className="text-slate-600">
+                            Gráficos intuitivos que te muestran a dónde va tu dinero con piezas visuales claras.
+                        </p>
+                    </div>
+                    
+                    {/* Feature 3 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">📱</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Acceso Desde Cualquier Lugar</h3>
+                        <p className="text-slate-600">
+                            Accede a tu información desde cualquier dispositivo, en cualquier momento, en cualquier lugar.
+                        </p>
+                    </div>
+                    
+                    {/* Feature 4 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">🏷️</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Categorías Inteligentes</h3>
+                        <p className="text-slate-600">
+                            Categoriza tus transacciones automáticamente o crea las tuyas propias para mejor control.
+                        </p>
+                    </div>
+                    
+                    {/* Feature 5 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">📈</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Reportes Detallados</h3>
+                        <p className="text-slate-600">
+                            Obtén reportes completos de tus gastos por período, categoría y más para planificar mejor.
+                        </p>
+                    </div>
+                    
+                    {/* Feature 6 */}
+                    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition">
+                        <div className="text-4xl mb-4">🔒</div>
+                        <h3 className="text-xl font-bold mb-3 text-slate-900">Seguridad Garantizada</h3>
+                        <p className="text-slate-600">
+                            Tus datos financieros están protegidos con encriptación de nivel empresarial.
+                        </p>
+                    </div>
+                </div>
+                
+                {/* Call to Action */}
+                <div className="mt-16 text-center">
+                    <h2 className="text-3xl font-bold mb-6 text-slate-900">
+                        ¿Listo para descubrir dónde está tu dinero?
+                    </h2>
+                    <button className="px-10 py-4 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition text-lg">
+                        Comenzar Gratis Ahora
+                    </button>
+                </div>
+            </div>
         </section>
     )
 }

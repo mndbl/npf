@@ -1,6 +1,8 @@
 import { ParallaxBackground } from "../components/sections/ParallaxBackGround"
 import { Example } from "../components/sections/Example"
 import { Hero } from "../components/sections/Hero"
+import { WimmFooter } from "../components/sections/WimmFooter"
+import { BenefitsWimm } from "../components/sections/BenefitsWimm"
 import { useNavigation } from "react-router-dom"
 import { Loader } from "../components/loaders/loader"
 
@@ -11,12 +13,16 @@ export function LandingPage() {
     if (navigation.state === 'loading') return <Loader />
     return (
         <>
-            {/* Hero */}
+            {/* WIMM Hero Section */}
             <Hero/>
-            {/* Parallax Background */}
+            {/* Call to Action */}
             <ParallaxBackground />
-            {/* Content */}
+            {/* Features */}
             <Example />
+            {/* Benefits */}
+            <BenefitsWimm />
+            {/* Footer */}
+            <WimmFooter />
 
         </>
 
