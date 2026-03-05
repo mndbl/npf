@@ -23,9 +23,9 @@ export async function loader() {
 
 export function Dashboard() {
     const { categories, latestRegister } = useLoaderData()
-    const incomes = categories.find(cat => cat.name === 'ingresos')
+    const incomes = categories.find(cat => cat.name === 'ingresos')?.balanceCategory || 0;
     const expenses = categories.filter(cat => cat.name === 'gastos' || cat.name === 'remesas' || cat.name === 'retenciones de sueldos').map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
-    const assets = categories.filter(cat => cat.name === 'ahorros' || cat.name === 'cajas' || cat.name === 'cuentas por cobrar' || cat.name === 'inversiones')
+    const assets = categories.filter(cat => cat.name === 'ahorros' || cat.name === 'cajas y bancos' || cat.name === 'cajas' ||cat.name === 'cuentas por cobrar' || cat.name === 'inversiones')
         .map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
     const liabilities = categories.filter(cat => cat.name === 'cuentas por pagar').map(cat => cat.balanceCategory).reduce((cat, prev) => parseFloat(cat) + prev, 0)
     const utilityOrLoss = parseFloat(-(expenses + incomes.balanceCategory))

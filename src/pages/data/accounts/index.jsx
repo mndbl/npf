@@ -16,7 +16,7 @@ export async function loader({ request }) {
     const registers = await dataService.getData(`${registers_URL}/index`, q, { keys: ['name'] }, accessToken)
 
 
-    accounts.forEach(acc => {
+    accounts?.forEach(acc => {
         const categorie = accountsCategories.find(cat => cat.id === acc.account_category_id)
         acc.account_category_id = categorie.name
         const registers_details = registers.map(reg => reg.register_details)

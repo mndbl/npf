@@ -1,7 +1,7 @@
 import { nf } from "../../config/main.config"
 import { SubTable } from "./SocialTrafficAndRecentActivities"
 
-export function AccountsByCategories({ categories, setShowAccountDetails, showAccountDetails }) {
+export function AccountsByCategories({ categories, setShowAccountDetails}) {
     return (
         <div className="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
             <div className="rounded-t mb-0 px-4 border-0">
@@ -20,7 +20,7 @@ export function AccountsByCategories({ categories, setShowAccountDetails, showAc
                             categories.map((cat, index) => {
 
                                 const relatedAccounts = cat.relatedAccounts
-                                const balanceCategory = cat.balanceCategory
+                                const balanceCategory = cat.balanceCategory ?? 0
                                 return (
                                     <div key={`items-category-accounts-${cat.name}`}
                                         className="group flex flex-col gap-2 rounded-lg bg-gray-600 px-5 py-1 text-white"
